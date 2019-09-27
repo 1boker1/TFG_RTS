@@ -153,7 +153,6 @@
     <Compile Include="Assets\Scripts\Object Pooling\PoolSystem.cs" />
     <Compile Include="Assets\Scripts\ObjectSelection\SelectorDrawer.cs" />
     <Compile Include="Assets\Scripts\ObstacleAvoidance\ObstacleAvoidance.cs" />
-    <Compile Include="Assets\Scripts\ObstacleAvoidance\TTTETE.cs" />
     <Compile Include="Assets\Scripts\Resources\Quarry.cs" />
     <Compile Include="Assets\Scripts\Resources\Resource.cs" />
     <Compile Include="Assets\Scripts\Resources\ResourceType.cs" />
