@@ -32,6 +32,8 @@ namespace Assets.Scripts.Building
 
         public Unit.Unit Worker;
 
+        private LineConstructor lineConstructor;
+
         #region Refactor
 
         public MeshFilter meshFilter;
@@ -57,7 +59,8 @@ namespace Assets.Scripts.Building
 
             if (constructionLine == null) constructionLine = gameObject.AddComponent<LineRenderer>();
 
-            LineSetup();
+            lineConstructor = new LineConstructor(constructionLine, boxCollider);
+            lineConstructor.SetUpLine();
 
             SelectionManager.isPlacingBuild = true;
 
@@ -93,8 +96,7 @@ namespace Assets.Scripts.Building
             {
                 transform.position = hit.point;
 
-                if (constructionLine != null)
-                    LinePosition();
+                if (constructionLine != null) lineConstructor.PositionLine();
 
                 transform.position = new Vector3(transform.position.x, 0.01f, transform.position.z);
 
@@ -177,51 +179,6 @@ namespace Assets.Scripts.Building
             for (var index = 0; index < meshRenderer.materials.Length; index++)
             {
                 meshRenderer.materials[index] = material;
-            }
-        }
-
-        private void LineSetup()
-        {
-            constructionLine.enabled = false;
-
-            Vector3[] positions = new Vector3[4];
-
-            positions[0] = new Vector3(boxCollider.bounds.min.x, 1, boxCollider.bounds.min.z);
-            positions[1] = new Vector3(boxCollider.bounds.min.x, 1, boxCollider.bounds.max.z);
-            positions[2] = new Vector3(boxCollider.bounds.max.x, 1, boxCollider.bounds.max.z);
-            positions[3] = new Vector3(boxCollider.bounds.max.x, 1, boxCollider.bounds.min.z);
-
-            constructionLine.positionCount = positions.Length;
-            constructionLine.startWidth = 0.1f;
-            constructionLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            constructionLine.receiveShadows = false;
-
-            constructionLine.material = mainMaterial;
-
-            for (int i = 0; i < positions.Length; i++)
-            {
-                constructionLine.SetPosition(i, positions[i]);
-            }
-
-            constructionLine.loop = true;
-
-            LinePosition();
-
-            constructionLine.enabled = true;
-        }
-
-        private void LinePosition()
-        {
-            Vector3[] positions = new Vector3[4];
-
-            positions[0] = new Vector3(boxCollider.bounds.min.x, 1, boxCollider.bounds.min.z);
-            positions[1] = new Vector3(boxCollider.bounds.min.x, 1, boxCollider.bounds.max.z);
-            positions[2] = new Vector3(boxCollider.bounds.max.x, 1, boxCollider.bounds.max.z);
-            positions[3] = new Vector3(boxCollider.bounds.max.x, 1, boxCollider.bounds.min.z);
-
-            for (int i = 0; i < positions.Length; i++)
-            {
-                constructionLine.SetPosition(i, positions[i]);
             }
         }
     }

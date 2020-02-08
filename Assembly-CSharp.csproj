@@ -131,6 +131,7 @@
     <Compile Include="Assets\Scripts\Building\BuildingConstructor.cs" />
     <Compile Include="Assets\Scripts\Building\BuildingHealthSystem.cs" />
     <Compile Include="Assets\Scripts\Building\BuildingPreview.cs" />
+    <Compile Include="Assets\Scripts\Building\LineConstructor.cs" />
     <Compile Include="Assets\Scripts\Building\SpawnerBuilding.cs" />
     <Compile Include="Assets\Scripts\Building\Stockpile.cs" />
     <Compile Include="Assets\Scripts\Building\Turret.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Assets\Scripts\Resources\ResourceType.cs" />
     <Compile Include="Assets\Scripts\Resources\ShowStoneEfficiency.cs" />
     <Compile Include="Assets\Scripts\Resources\StoneEfficiency.cs" />
+    <Compile Include="Assets\Scripts\SliceObject.cs" />
     <Compile Include="Assets\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Scripts\StateMachine\States\AttackState.cs" />
     <Compile Include="Assets\Scripts\StateMachine\States\BuildState.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Assets\TEST\ZoneToCapture.cs" />
     <Compile Include="Assets\TreePlacement.cs" />
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Resources\Shaders\DepthOfField.shader" />
+    <None Include="Assets\Shaders\MeshMask.shader" />
     <None Include="Assets\AssetStore\TownHall\Shaders\EA.shader" />
     <None Include="Assets\AssetStore\TownHall\Shaders\Unlit_AO.shader" />
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Resources\Shaders\MotionBlur.cginc" />
@@ -200,7 +203,6 @@
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
     <None Include="Assets\AssetStore\FogOfWar\Resources\FogOfWarShader.shader" />
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Resources\Shaders\Uber.shader" />
-    <None Include="Assets\Shaders\NewSurfaceShader.shader" />
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Resources\Shaders\Blit.shader" />
     <None Include="Assets\AssetStore\TownHall\PostProcessing\Editor Resources\Monitors\WaveformRender.shader" />
     <None Include="Assets\AssetStore\FogOfWar\Resources\FogOfWarBlurShader.shader" />

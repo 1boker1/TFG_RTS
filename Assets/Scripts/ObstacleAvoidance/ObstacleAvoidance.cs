@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,14 +29,11 @@ namespace Assets.Scripts.ObstacleAvoidance
 
             var final = destination;
 
-            foreach (var point in points)
+            foreach (var point in points.Where(point => !DestinationBlocked(unit.transform, point, unit.Target.transform)))
             {
-                if (!DestinationBlocked(unit.transform, point, unit.Target.transform))
-                {
-                    final = point;
+                final = point;
 
-                    break;
-                }
+                break;
             }
 
             destination = target.ClosestPoint(new Vector3(final.x, destination.y, final.z));
@@ -45,17 +43,9 @@ namespace Assets.Scripts.ObstacleAvoidance
 
         public static bool DestinationBlocked(Transform transform, Vector3 point, Transform target)
         {
-            foreach (var collider in Physics.OverlapSphere(point, 1.5f))
-            {
-                if (collider.transform != transform &&
-                    collider.transform != target &&
-                    collider.GetComponent<Unit.Unit>())
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Physics.OverlapSphere(point, 1.5f).Any(collider => collider.transform != transform &&
+                                                                      collider.transform != target &&
+                                                                      collider.GetComponent<Unit.Unit>());
         }
     }
 }
