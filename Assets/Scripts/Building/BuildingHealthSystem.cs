@@ -1,4 +1,7 @@
-﻿using Assets.Scripts.Interfaces;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Design;
+using Assets.Scripts.Data;
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -12,26 +15,41 @@ namespace Assets.Scripts.Building
         public int HealthPoints { get; set; }
         public int MaxHealthPoints { get; set; }
 
-        private Building building;
-
         public UnityEvent OnBuilt;
+
+        private List<Material> materials = new List<Material>();
+
+        private float colliderHeight;
 
         private void Start()
         {
-            building = GetComponent<Building>();
+            MeshRenderer _MeshRenderer = GetComponent<MeshRenderer>();
 
-            Built = building.buildingData.built;
-            MaxHealthPoints = building.buildingData.MaxHealthPoints;
+            _MeshRenderer.GetMaterials(materials);
+
+            var min = _MeshRenderer.bounds.min.y;
+            var max = _MeshRenderer.bounds.max.y / transform.localScale.y;
+
+            foreach (var mat in materials)
+            {
+                mat.SetFloat("_MinY", min);
+                mat.SetFloat("_MaxY", max + 0.1f);
+            }
+
+            BuildingData _BuildingData = GetComponent<BuildingData>();
+
+            Built = _BuildingData.built;
+            MaxHealthPoints = _BuildingData.MaxHealthPoints;
 
             HealthPoints = Built ? MaxHealthPoints : 1;
 
             if (Built) FinishBuild();
-            else building.constructor.ConstructionAnimation();
+            else ConstructionAnimation();
         }
 
         public void OutOufHealth()
         {
-            Destroy(building.gameObject);
+            Destroy(gameObject);
         }
 
         public void ModifyHealth(int value, ISelectable attacker)
@@ -40,7 +58,7 @@ namespace Assets.Scripts.Building
 
             HealthPoints -= value;
 
-            if (HealthPoints < 0)
+            if (HealthPoints <= 0)
             {
                 HealthPoints = 0;
 
@@ -52,25 +70,34 @@ namespace Assets.Scripts.Building
         {
             if (HealthPoints < MaxHealthPoints)
             {
-                building.constructor.ConstructionAnimation();
+                ConstructionAnimation();
 
                 HealthPoints += amount;
                 HealthPoints = Mathf.Clamp(HealthPoints, 0, MaxHealthPoints);
             }
 
-            if (HealthPoints == MaxHealthPoints) FinishBuild();
+            if (HealthPoints == MaxHealthPoints && !Built) FinishBuild();
         }
 
         private void FinishBuild()
         {
-            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
-
             Built = true;
+            HealthPoints = MaxHealthPoints;
 
-            if (!building.Selected) building.constructor.constructionLine.enabled = false;
-            if (GetComponent<NavMeshObstacle>() != null) GetComponent<NavMeshObstacle>().carving = true;
+            ConstructionAnimation();
+
+            if (GetComponent<NavMeshObstacle>() != null)
+                GetComponent<NavMeshObstacle>().carving = true;
 
             OnBuilt?.Invoke();
+        }
+
+        public void ConstructionAnimation()
+        {
+            float fillPercentage = (float)HealthPoints / (float)MaxHealthPoints;
+
+            foreach (var mat in materials)
+                mat.SetFloat("_Percentage", fillPercentage);
         }
     }
 }

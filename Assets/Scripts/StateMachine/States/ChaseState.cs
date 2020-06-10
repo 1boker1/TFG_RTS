@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.Managers;
 using Assets.Scripts.Unit;
-
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using Assets.Scripts.ObstacleAvoidance;
 
 namespace Assets.Scripts.StateMachine.States
 {
@@ -11,7 +11,6 @@ namespace Assets.Scripts.StateMachine.States
     {
         private Unit.Unit unit;
         private NavMeshAgent navMeshAgent;
-        private NavMeshObstacle navMeshObstacle;
 
         [SerializeField] private UnityEvent OnReachedTarget;
         [SerializeField] private UnityEvent OnNullTarget;
@@ -25,14 +24,13 @@ namespace Assets.Scripts.StateMachine.States
         {
             if (unit == null) unit = GetComponent<Unit.Unit>();
             if (navMeshAgent == null) navMeshAgent = GetComponent<NavMeshAgent>();
-            if (navMeshObstacle == null) navMeshObstacle = GetComponent<NavMeshObstacle>();
 
-            navMeshObstacle.enabled = false;
-            navMeshAgent.enabled = true;
             StaticTarget = !unit.Target.transform.GetComponent<NavMeshAgent>();
             destination = Utils.ClosestPoint(unit, unit.Target);
             lastTargetPosition = unit.Target.transform.position;
             navMeshAgent.SetDestination(destination);
+
+            SetAnimation();
         }
 
         public override void Execute()
@@ -43,15 +41,13 @@ namespace Assets.Scripts.StateMachine.States
             else
                 CheckForNewTargetPosition();
 
-            if (Utils.InRange(unit, unit.Target, navMeshAgent.stoppingDistance)) OnReachedTarget?.Invoke();
+            if (Utils.InRange(unit, unit.Target, unit.unitData.UnitRange)) OnReachedTarget?.Invoke();
         }
 
         public override void Exit()
         {
             navMeshAgent.SetDestination(navMeshAgent.transform.position);
-
-            navMeshAgent.enabled = false;
-            navMeshObstacle.enabled = true;
+            animator.SetBool(AnimationBool, false);
         }
 
         private void CheckForNewTargetPosition()

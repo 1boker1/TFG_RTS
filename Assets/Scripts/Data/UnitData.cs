@@ -39,10 +39,10 @@ namespace Assets.Scripts.Data
 
         [Header("Attack Data")]
         [SerializeField] private float attackSpeed = 1f;
-        [SerializeField] private float attackRange = 1f;
+        [SerializeField] private float unitRange = 1f;
         [SerializeField] private float attackDamage = 5;
         public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
-        public float AttackRange { get => attackRange; set => attackRange = value; }
+        public float UnitRange { get => unitRange; set => unitRange = value; }
         public float AttackDamage { get => attackDamage; set => attackDamage = value; }
 
 

@@ -22,6 +22,8 @@ public class CameraControl : MonoBehaviour
 
     private Camera mainCamera;
 
+    Vector3[] worldPoints = new Vector3[4];
+
     private void Start()
     {
         layerMask = LayerMask.GetMask("MiniMap");
@@ -31,10 +33,11 @@ public class CameraControl : MonoBehaviour
     private void Update()
     {
         MouseMovement();
-        PanningAndZoom();
+        Zoom();
         CameraRectangle();
 
-        if (Input.GetKey("space")) CenterCamera();
+        if (Input.GetKey("space"))
+            CenterCamera();
     }
 
     private void MouseMovement()
@@ -54,19 +57,16 @@ public class CameraControl : MonoBehaviour
 
         Vector3 desiredPosition = mainCamera.transform.localPosition + translation;
 
-        if (desiredPosition.x < -levelArea || levelArea < desiredPosition.x) translation.x = 0;
-        if (desiredPosition.z < -levelArea || levelArea < desiredPosition.z) translation.z = 0;
-
         translation = Quaternion.Euler(0, mainCamera.transform.rotation.eulerAngles.y, 0) * translation;
 
         mainCamera.transform.localPosition += translation;
     }
 
-    private void PanningAndZoom()
+    private void Zoom()
     {
         float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
 
-        if (scrollWheel != 0)
+        if (scrollWheel != 0f)
         {
             residualSpeed = 0.30f;
             residualNormal = scrollWheel < 0 ? 1 : -1;
@@ -76,11 +76,10 @@ public class CameraControl : MonoBehaviour
 
         float speed = (residualSpeed * residualNormal) - (15 * scrollWheel);
 
-        float yPosition = mainCamera.transform.localPosition.y + speed;
+        Vector3 newPosition = mainCamera.transform.localPosition + mainCamera.transform.forward * -speed;
 
-        yPosition = Mathf.Clamp(yPosition, maxZoom, minZoom);
-
-        mainCamera.transform.localPosition = mainCamera.transform.localPosition.With(y: yPosition);
+        if (newPosition.y < minZoom && newPosition.y > maxZoom)
+            mainCamera.transform.localPosition = newPosition;
     }
 
     private void CameraRectangle()
@@ -94,37 +93,53 @@ public class CameraControl : MonoBehaviour
         rays[2] = mainCamera.ScreenPointToRay(new Vector3(Screen.width, 0, 0));
         rays[3] = mainCamera.ScreenPointToRay(new Vector3(Screen.width, Screen.height, 0));
 
-        Vector3[] worldPoints = new Vector3[4];
-
         for (int i = 0; i < rays.Length; i++)
         {
             RaycastHit hit;
 
             if (Physics.Raycast(rays[i], out hit, 9000, layerMask))
             {
-                if (hit.transform != null) worldPoints[i] = hit.point + new Vector3(0, 60, 0);
+                if (hit.transform != null)
+                    worldPoints[i] = hit.point + new Vector3(0, 60, 0);
             }
         }
 
-        lines[0].SetPosition(0, worldPoints[0]);
-        lines[0].SetPosition(1, worldPoints[1]);
+        float distance = mainCamera.transform.position.y / Mathf.Sin(90 - mainCamera.transform.rotation.eulerAngles.x);
 
-        lines[1].SetPosition(0, worldPoints[0]);
-        lines[1].SetPosition(1, worldPoints[2]);
+        Vector3[] frustumCorners = new Vector3[4]; // will hold the result
+        mainCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), distance, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        Vector3[] worldCorners = new Vector3[4];
 
-        lines[2].SetPosition(0, worldPoints[3]);
-        lines[2].SetPosition(1, worldPoints[1]);
+        for (int i = 0; i < 4; i++)
+        {
+            worldCorners[i] = mainCamera.transform.TransformVector(frustumCorners[i]);
+        }
 
-        lines[3].SetPosition(0, worldPoints[3]);
-        lines[3].SetPosition(1, worldPoints[2]);
+        lines[0].SetPosition(0, worldPoints[0].With(y: 50));
+        lines[0].SetPosition(1, worldPoints[1].With(y: 50));
+        lines[1].SetPosition(0, worldPoints[1].With(y: 50));
+        lines[1].SetPosition(1, worldPoints[3].With(y: 50));
+        lines[2].SetPosition(0, worldPoints[3].With(y: 50));
+        lines[2].SetPosition(1, worldPoints[2].With(y: 50));
+        lines[3].SetPosition(0, worldPoints[2].With(y: 50));
+        lines[3].SetPosition(1, worldPoints[0].With(y: 50));
     }
 
     public void CenterCamera()
     {
-        var centerOfMass = Utils.CenterOfMass(SelectionManager.SelectedUnits);
+        Vector3 centerOfMass = Utils.CenterOfMass(SelectionManager.SelectedUnits);
 
-        var offset = transform.position.y * 0.5f;
+        float distance = transform.position.y / Mathf.Sin(90 - transform.rotation.eulerAngles.x);
 
-        transform.position = new Vector3(centerOfMass.x, transform.position.y, centerOfMass.z - offset);
+        transform.position = (centerOfMass + (-transform.forward * distance)).With(y: transform.position.y);
+    }
+
+    public static void CenterCamera(Vector3 point)
+    {
+        Transform _Camera = Camera.main.transform;
+
+        float distance = _Camera.position.y / Mathf.Sin(90 - _Camera.rotation.eulerAngles.x);
+
+        _Camera.position = (point + (-_Camera.forward * distance)).With(y: _Camera.position.y);
     }
 }

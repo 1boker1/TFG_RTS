@@ -13,13 +13,14 @@ public class Arrow : MonoBehaviour
 
     void Update()
     {
+        Destroy(this.gameObject);
         if (!finished)
         {
             transform.position += direction * speed * Time.deltaTime;
         }
         else
         {
-            Invoke("OutOufHealth", 1);
+            Invoke("Die", 1);
         }
     }
 

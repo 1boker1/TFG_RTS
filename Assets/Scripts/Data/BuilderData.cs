@@ -2,8 +2,6 @@
 using Assets.Scripts.Interfaces;
 using UnityEngine;
 
-// ReSharper disable ConvertToAutoProperty
-
 namespace Assets.Scripts.Data
 {
     public class BuilderData : MonoBehaviour, IBuildData, ISpawnData

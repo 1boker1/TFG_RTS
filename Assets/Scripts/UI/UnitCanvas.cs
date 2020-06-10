@@ -7,7 +7,7 @@ using Assets.Scripts.Unit;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitCanvas : Singleton<SpawnBuildingCanvas>
+public class UnitCanvas : Singleton<UnitSpawnerCanvas>
 {
     [SerializeField] private Image unitSprite;
 

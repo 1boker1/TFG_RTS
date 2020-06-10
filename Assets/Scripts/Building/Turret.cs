@@ -99,7 +99,7 @@ namespace Assets.Scripts.Building
 
                 if (destinationMarker.activeSelf)
                 {
-                    SelectionManager.Group(destinationMarker.transform.position, SelectionManager.SelectedUnits);
+                    SelectionManager.Instance.Group(destinationMarker.transform.position, SelectionManager.SelectedUnits);
                 }
 
                 ArrangeButtons(index);
@@ -122,7 +122,7 @@ namespace Assets.Scripts.Building
             }
 
             if (destinationMarker.activeSelf && SelectionManager.SelectedUnits.Count > 0)
-                SelectionManager.Group(destinationMarker.transform.position, SelectionManager.SelectedUnits);
+                SelectionManager.Instance.Group(destinationMarker.transform.position, SelectionManager.SelectedUnits);
         }
 
         public void SetGuardedUnitsDestination()
@@ -136,13 +136,13 @@ namespace Assets.Scripts.Building
                 {
                     destinationMarker.transform.position = hit.point;
                     destinationMarker.SetActive(true);
-                    destinationMarker.GetComponent<PathRenderer>().SetPositions();
+                    destinationMarker.GetComponent<PathRenderer>().SetPositions(transform.position);
                 }
                 else if (hit.transform.gameObject == this.gameObject)
                 {
                     destinationMarker.transform.localPosition = Vector3.zero;
                     destinationMarker.SetActive(false);
-                    destinationMarker.GetComponent<PathRenderer>().SetPositions();
+                    destinationMarker.GetComponent<PathRenderer>().SetPositions(transform.position);
                 }
             }
         }
@@ -177,7 +177,8 @@ namespace Assets.Scripts.Building
 
             enemy = other.GetComponent<ISelectable>() as Unit.Unit;
 
-            if (enemy != null) enemy = enemy.Team == building.Team ? null : enemy;
+            if (enemy != null)
+                enemy = enemy.Team == building.Team ? null : enemy;
         }
 
         private void OnTriggerExit(Collider other)

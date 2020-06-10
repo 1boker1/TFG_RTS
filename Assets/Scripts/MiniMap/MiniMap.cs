@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Managers;
+using Assets.Scripts.ProceduralGeneration;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,9 +8,9 @@ namespace Assets.Scripts.MiniMap
 {
     public class MiniMap : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public BoxCollider2D miniMapCollider;
-        public BoxCollider mapCollider;
+        public bool DebugScene = true;
 
+        public BoxCollider2D miniMapCollider;
         public bool inside = false;
 
         public Camera minimapCamera;
@@ -20,10 +22,50 @@ namespace Assets.Scripts.MiniMap
 
         public float smoothness = 1;
 
+        private MeshGenerator mapInfo;
+        private float MapSize;
+
+        public LayerMask MinimapLayer;
+        public LayerMask EverythingLayer;
+
+        public RenderTexture backgroundTexture;
+        public RenderTexture foregroundTexture;
+
         private void Start()
         {
+            if (DebugScene)
+                SetUp();
+
+            StartCoroutine(DelayedRendering());
+        }
+
+        public void SetUp()
+        {
+            mapInfo = FindObjectOfType<MeshGenerator>();
             mainCamera = Camera.main;
             destination = mainCamera.transform.position;
+
+            MapSize = mapInfo.MapHeight * mapInfo.VertexDistance * 0.5f;
+            minimapCamera.orthographicSize = MapSize;
+            minimapCamera.transform.position = new Vector3(MapSize, 200f, MapSize);
+
+            minimapCamera.targetTexture = backgroundTexture;
+            minimapCamera.cullingMask = EverythingLayer;
+            minimapCamera.Render();
+            minimapCamera.targetTexture = foregroundTexture;
+            minimapCamera.cullingMask = MinimapLayer;
+
+            minimapCamera.enabled = false;
+        }
+
+        public IEnumerator DelayedRendering()
+        {
+            while (true)
+            {
+                
+                minimapCamera.Render();
+                yield return new WaitForSeconds(0.04166667f);
+            }
         }
 
         private void Update()
@@ -31,7 +73,6 @@ namespace Assets.Scripts.MiniMap
             if (!inside) return;
 
             if (Input.GetMouseButton(0)) CalculateSquare();
-            if (Input.GetMouseButton(1)) MoveUnits();
 
             MoveCamera();
         }
@@ -71,47 +112,18 @@ namespace Assets.Scripts.MiniMap
 
             var finalCameraPosition = minimapCamera.transform.position + new Vector3(vectorFromCenter.x, 0, vectorFromCenter.y);
 
-            finalCameraPosition -= (CalculateMaxViewRange() - finalCameraPosition) / 2;
+            finalCameraPosition -= CalculateMaxViewRange();
 
             var yCorrection = new Vector3(0, -finalCameraPosition.y + mainCamera.transform.position.y, 0);
 
             destination = finalCameraPosition + yCorrection;
         }
 
-        private void MoveUnits()
-        {
-            if (SelectionManager.SelectedUnits.Count <= 0) return;
-
-            Vector2 mousePosition = Input.mousePosition;
-
-            var miniMapVector = (mousePosition - new Vector2(miniMapCollider.bounds.min.x, miniMapCollider.bounds.min.y));
-
-            var xOffset = miniMapVector.x / (miniMapCollider.bounds.max.x - miniMapCollider.bounds.min.x);
-            var yOffset = miniMapVector.y / (miniMapCollider.bounds.max.y - miniMapCollider.bounds.min.y);
-
-            xOffset *= mapCollider.gameObject.transform.localScale.x;
-            yOffset *= mapCollider.gameObject.transform.localScale.z;
-
-            var unitGroup = new Vector3(mapCollider.bounds.min.x + xOffset, 0, mapCollider.bounds.min.z + yOffset);
-
-            SelectionManager.Group(unitGroup, SelectionManager.SelectedUnits);
-        }
-
         private Vector3 CalculateMaxViewRange()
         {
-            var ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height, 0));
+            float distance = mainCamera.transform.position.y / Mathf.Sin(90 - mainCamera.transform.rotation.eulerAngles.x);
 
-            var worldPoint = Vector3.zero;
-
-            if (Physics.Raycast(ray, out var hit, 9000, LayerMask.GetMask("MiniMap")))
-            {
-                if (hit.transform != null)
-                {
-                    worldPoint = hit.point - new Vector3(0, hit.point.y, 0);
-                }
-            }
-
-            return worldPoint;
+            return mainCamera.transform.forward * distance;
         }
     }
 }

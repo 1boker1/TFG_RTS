@@ -36,8 +36,6 @@ namespace Assets.Scripts.Resources
         private void Update()
         {
             line.transform.position = new Vector3(transform.position.x, 1, transform.position.z);
-
-            if (CanBuild() == false) buildingPreview.CanBuild(false);
         }
 
         private void OnDestroy()

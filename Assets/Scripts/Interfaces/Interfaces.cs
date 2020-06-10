@@ -93,7 +93,7 @@ namespace Assets.Scripts.Interfaces
     public interface IAttackData
     {
         float AttackSpeed { get; set; }
-        float AttackRange { get; set; }
+        float UnitRange { get; set; }
         float AttackDamage { get; set; }
     }
 

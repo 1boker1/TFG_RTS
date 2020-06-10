@@ -3,6 +3,7 @@ using System.Collections;
 using Assets.Scripts.Data;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Resources;
 using Assets.Scripts.StateMachine;
 using Assets.Scripts.StateMachine.States;
 using UnityEngine;
@@ -12,32 +13,34 @@ namespace Assets.Scripts.Building
 {
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(NavMeshObstacle))]
-    [RequireComponent(typeof(LineRenderer))]
     [RequireComponent(typeof(BuildingData))]
     [RequireComponent(typeof(BuildingHealthSystem))]
     public class Building : MonoBehaviour, ISelectable
     {
-        public bool Built { get; set; }
         public bool Selected { get; set; }
         public int Team { get; set; }
 
-        [HideInInspector] public BuildingData buildingData;
-        [HideInInspector] public BuildingConstructor constructor;
+        private BuildingData buildingData;
+        public BuildingData GetBuildingData() => buildingData;
+
+        private BuildingHealthSystem healthSystem;
+        public BuildingHealthSystem GetBuildingHealthSystem() => healthSystem;
 
         private void Awake()
         {
             buildingData = GetComponent<BuildingData>();
-            constructor = new BuildingConstructor(this);
+            healthSystem = GetComponent<BuildingHealthSystem>();
 
             Team = buildingData.team;
-            Built = buildingData.built;
+
+            transform.position = transform.position.With(y: 0.01f);
         }
 
         public void Select(int? team)
         {
             Selected = true;
 
-            constructor.constructionLine.enabled = true;
+            SelectionLine.Instance.LineSetup(gameObject);
 
             if (!SelectionManager.SelectedEntities.Contains(this))
                 SelectionManager.SelectedEntities.Add(this);
@@ -47,8 +50,8 @@ namespace Assets.Scripts.Building
         {
             Selected = false;
 
-            constructor.constructionLine.enabled = false;
-
+            if (SelectionLine.Instance != null)
+                SelectionLine.Instance.EnableLine(false);
 
             if (SelectionManager.SelectedEntities.Contains(this))
                 SelectionManager.SelectedEntities.Remove(this);
@@ -56,28 +59,31 @@ namespace Assets.Scripts.Building
 
         public IEnumerator Highlight()
         {
-            for (int i = 0; i < 6; i++)
-            {
-                constructor.constructionLine.enabled = !constructor.constructionLine.enabled;
-
-                yield return new WaitForSeconds(.2f);
-            }
-
-            constructor.constructionLine.enabled = false;
+            SelectionLine.Instance.HighlightObject(this);
+            yield break;
         }
 
         public Type GetAction(Unit.Unit unit, int? team)
         {
-            unit.Target = Built ? null : this;
+            if (team != Team)
+                unit.Target = this;
+            else
+                unit.Target = healthSystem.Built ? null : this;
 
             return GetActionWithoutTarget(unit, team);
         }
 
         public Type GetActionWithoutTarget(Unit.Unit unit, int? team)
         {
-            if (team != Team) return typeof(AttackState);
+            if (team != Team)
+                return typeof(AttackState);
 
-            return Built ? typeof(IdleState) : typeof(BuildState);
+            return healthSystem.Built ? typeof(IdleState) : typeof(BuildState);
+        }
+
+        private void OnDestroy()
+        {
+            Deselect();
         }
     }
 }

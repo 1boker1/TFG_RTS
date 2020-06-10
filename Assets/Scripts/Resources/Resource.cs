@@ -43,27 +43,27 @@ namespace Assets.Scripts.Resources
         {
             Selected = true;
 
-            if (!SelectionManager.SelectedEntities.Contains(this)) SelectionManager.SelectedEntities.Add(this);
+            SelectionLine.Instance.LineSetup(gameObject);
+
+            if (!SelectionManager.SelectedEntities.Contains(this))
+                SelectionManager.SelectedEntities.Add(this);
         }
 
         public void Deselect()
         {
             Selected = false;
 
-            if (SelectionManager.SelectedEntities.Contains(this)) SelectionManager.SelectedEntities.Remove(this);
+            if (SelectionLine.Instance != null)
+                SelectionLine.Instance.EnableLine(false);
+
+            if (SelectionManager.SelectedEntities.Contains(this))
+                SelectionManager.SelectedEntities.Remove(this);
         }
 
         public IEnumerator Highlight()
         {
-            for (var i = 0; i < 6; i++)
-            {
-                //enable sr
-
-
-                yield return new WaitForSeconds(.2f);
-            }
-
-            //disable sr
+            SelectionLine.Instance.HighlightObject(this);
+            yield break;
         }
 
         public Type GetAction(Unit.Unit unit, int? team)
@@ -79,7 +79,11 @@ namespace Assets.Scripts.Resources
 
         public void ModifyHealth(int value, ISelectable attacker)
         {
-            if (!infiniteSource) amount -= (int)(value * gatherMultiplier);
+            if(amount<=0)
+                return;
+
+            if (!infiniteSource)
+                amount -= (int)(value * gatherMultiplier);
 
             var type = typeof(ResourceType);
 
@@ -93,7 +97,8 @@ namespace Assets.Scripts.Resources
 
             ResourceManager.Instance.AddResource(type, value * gatherMultiplier);
 
-            if (amount <= 0) OutOufHealth();
+            if (amount <= 0)
+                OutOufHealth();
         }
             
         public void OutOufHealth()

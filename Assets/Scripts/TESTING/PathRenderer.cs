@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
-    [SerializeField] private GameObject initialPoint;
     [SerializeField] private LineRenderer line;
 
-    public void SetPositions()
+    public void SetPositions(Vector3 InitialPoint)
     {
-        line.SetPosition(0, FlattenY(initialPoint.transform.position));
-        line.SetPosition(1, FlattenY(gameObject.transform.position));
+        line.positionCount = 2;
+        line.useWorldSpace = true;
+
+        line.SetPosition(0, MathExtension.CorrectVerticalPosition(InitialPoint) + Vector3.up);
+        line.SetPosition(1, MathExtension.CorrectVerticalPosition(transform.position + Vector3.up));
     }
 
     private Vector3 FlattenY(Vector3 vectorToFlat)

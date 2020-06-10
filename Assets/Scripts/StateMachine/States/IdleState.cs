@@ -6,7 +6,8 @@ namespace Assets.Scripts.StateMachine.States
     {
         public override void Enter()
         {
-
+            if (animator != null)
+                animator.SetBool(AnimationBool, true);
         }
 
         public override void Execute()
@@ -16,7 +17,8 @@ namespace Assets.Scripts.StateMachine.States
 
         public override void Exit()
         {
-
+            if (animator != null)
+                animator.SetBool(AnimationBool, false);
         }
     }
 }

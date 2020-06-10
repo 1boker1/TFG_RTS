@@ -17,18 +17,25 @@ namespace Assets.Scripts.StateMachine.States
         private IBuildable building;
         private IBuildData builderData;
 
+        [SerializeField] private GameObject tool;
+
         public override void Enter()
         {
             builderData = GetComponent<IBuildData>();
             building = unit.Target.transform.GetComponent<IBuildable>();
 
             Utils.LookTarget(unit, unit.Target);
+
+            if (tool != null)
+                tool.SetActive(true);
         }
 
         public override void Execute()
         {
-            if (building == null) OnBuildingDone?.Invoke();
-            if (!Utils.InRange(unit, unit.Target, unit.unitData.AttackRange)) { unit.ChangeState(typeof(ChaseState)); return; }
+            if (building == null)
+                OnBuildingDone?.Invoke();
+
+            if (!Utils.InRange(unit, unit.Target, unit.unitData.UnitRange)) { unit.ChangeState(typeof(ChaseState)); return; }
 
             timer += Time.deltaTime;
 
@@ -40,13 +47,22 @@ namespace Assets.Scripts.StateMachine.States
             }
         }
 
-        public override void Exit() { }
+        public override void Exit()
+        {
+            animator.SetBool(AnimationBool, false);
+
+            if (tool != null)
+                tool.SetActive(false);
+        }
 
         private void Construct()
         {
+            SetAnimation();
+
             building.Build(builderData.BuildAmount);
 
-            if (building.Built) OnBuildingDone?.Invoke();
+            if (building.Built)
+                OnBuildingDone?.Invoke();
         }
     }
 }

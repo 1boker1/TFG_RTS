@@ -16,11 +16,12 @@ namespace Assets.Scripts.Unit
         public static HashSet<Unit> AllUnits = new HashSet<Unit>();
 
         [SerializeField] private SpriteRenderer spriteRenderer;
+        private Animator animator;
 
         public UnitData unitData;
         public StateMachine.StateMachine stateMachine;
 
-        public ISelectable Target { get; set; } = null;
+        public ISelectable Target { get; set; }
 
         public Vector3 MoveDestination { get; private set; }
 
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Unit
         private void Awake()
         {
             States = GetComponents<State>().ToList();
-
+            animator = GetComponent<Animator>();
             Team = unitData.team;
 
             ChangeState(typeof(IdleState));
@@ -41,19 +42,23 @@ namespace Assets.Scripts.Unit
         private void Start()
         {
             AllUnits.Add(this);
+
+            if (SelectionManager.Instance.m_Team == Team)
+                PopulationManager.Instance.CurrentPopulation++;
         }
 
         public void Select(int? team)
         {
-            if (Team != team) return;
-
             Selected = true;
             spriteRenderer.enabled = true;
 
-            if (SelectionManager.SelectedUnits.Contains(this)) return;
+            if (SelectionManager.SelectedUnits.Contains(this))
+                return;
 
             SelectionManager.SelectedUnits.Add(this);
-            SelectionManager.OnTarget += OnTarget;
+
+            if (team == Team)
+                SelectionManager.OnTarget += OnTarget;
 
             if (!SelectionManager.SelectedEntities.Contains(this))
                 SelectionManager.SelectedEntities.Add(this);
@@ -121,20 +126,31 @@ namespace Assets.Scripts.Unit
         public void FindAnotherTarget()
         {
             var collides = Physics.OverlapSphere(transform.position, unitData.SearchRange);
+            ISelectable nextTarget = null;
+            float distance = 999f;
 
             foreach (var collider in collides)
             {
-                var nextTarget = collider.GetComponent<ISelectable>();
+                var tempTarget = collider.GetComponent<ISelectable>();
 
-                if (nextTarget != null && nextTarget.GetActionWithoutTarget(this, Team) == stateMachine.currentState.GetType())
+                if (tempTarget == null || tempTarget.GetActionWithoutTarget(this, Team) != stateMachine.currentState.GetType())
+                    continue;
+
+                if (tempTarget.transform.position.DistanceXZ(transform.position) < distance)
                 {
-                    OnTarget(nextTarget);
-
-                    return;
+                    nextTarget = tempTarget;
+                    distance = nextTarget.transform.position.DistanceXZ(transform.position);
                 }
             }
 
-            if (Target.Equals(null)) ChangeState(typeof(IdleState));
+            if (nextTarget != null)
+            {
+                OnTarget(nextTarget);
+                return;
+            }
+
+            ChangeState(typeof(IdleState));
+            Target = null;
         }
 
         public void MoveToPosition(Vector3 position)
@@ -152,9 +168,14 @@ namespace Assets.Scripts.Unit
 
         public void ChangeState(Type type)
         {
-            foreach (var state in States.Where(state => state.GetType() == type)) { stateMachine.ChangeState(state); return; }
+            foreach (var state in States.Where(state => state.GetType() == type))
+            {
+                stateMachine.ChangeState(state);
 
-            Debug.LogWarning("This unit can't perform " + type); //If Unit don't have the state as component
+                return;
+            }
+
+            Debug.LogWarning("This unit can't perform " + type);
 
             Target = null;
             ChangeState(typeof(IdleState));
@@ -163,6 +184,17 @@ namespace Assets.Scripts.Unit
         public void ChangeState(State state)
         {
             ChangeState(state.GetType());
+        }
+
+        private void OnDestroy()
+        {
+            AllUnits.Remove(this);
+
+            if (SelectionManager.Instance != null)
+            {
+                Deselect();
+                PopulationManager.Instance.CurrentPopulation--;
+            }
         }
     }
 }

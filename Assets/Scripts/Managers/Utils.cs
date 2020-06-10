@@ -3,11 +3,21 @@ using Assets.Scripts.Interfaces;
 using Assets.Scripts.Resources;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Managers
 {
     public static class Utils
     {
+        public static bool IsPointerOverUIObject()
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+            return results.Count > 0;
+        }
+
         public static T GetFromRay<T>()
         {
             RaycastHit hit;

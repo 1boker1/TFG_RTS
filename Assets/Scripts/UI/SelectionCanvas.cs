@@ -7,7 +7,6 @@ using Assets.Scripts.Data;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Managers;
 using JetBrains.Annotations;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 #pragma warning disable 649
@@ -32,17 +31,20 @@ namespace Assets.Scripts.UI
         private List<ISelectable> selectedEntities = new List<ISelectable>();
         private ISelectable showedEntity;
 
-        [SerializeField] private SpawnBuildingCanvas unitSpawnerCanvas;
+        [SerializeField] private UnitSpawnerCanvas unitSpawnerCanvas;
         [SerializeField] private StructureBuilderCanvas structureBuilderCanvas;
 
         private void Start()
         {
             SelectionManager.SelectedEntities.ListChanged += SelectedEntitiesListChanged;
+
+            EnableCanvas(false);
         }
 
         private void FixedUpdate()
         {
-            if (selectedEntities.Count == 0 || selectedEntities[0] == null) return;
+            if (selectedEntities.Count == 0 || selectedEntities[0] == null)
+                return;
 
             AssignHealthData(showedEntity.transform.GetComponent<IHealth>());
         }
@@ -50,7 +52,6 @@ namespace Assets.Scripts.UI
         private void SelectedEntitiesListChanged(object sender, ListChangedEventArgs args)
         {
             selectedEntities = SelectionManager.SelectedEntities.ToList();
-
             EnableCanvas(false);
             UpdateCanvasData();
         }
@@ -110,8 +111,8 @@ namespace Assets.Scripts.UI
             if (data == null) return;
 
             entityAttackDamageText.text = "Strength: " + data.AttackDamage;
-            entityAttackRangeText.text = "Range: " + data.AttackRange;
-            entityAttackSpeedText.text = "Attack Speed:" + data.AttackSpeed;
+            entityAttackRangeText.text = "Range: " + data.UnitRange;
+            entityAttackSpeedText.text = "Attack Speed: " + data.AttackSpeed;
         }
     }
 }

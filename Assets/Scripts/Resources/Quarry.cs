@@ -32,7 +32,7 @@ namespace Assets.Scripts.Resources
 
         public IEnumerator CollectResources()
         {
-            if (building.Built)
+            if (building.GetBuildingHealthSystem().Built)
                 ResourceManager.Instance.AddResource(typeof(Rock), resourcePerSecond * efficiency * multiplier);
 
             yield return new WaitForSeconds(1);

@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Assets.Scripts.Interfaces;
+using Assets.Scripts.StateMachine.States;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Managers
 {
-    public class SelectionManager : MonoBehaviour
+    public class SelectionManager : Singleton<SelectionManager>
     {
         public static Rect SelectionBox = new Rect(0, 0, 0, 0);
 
@@ -18,9 +20,9 @@ namespace Assets.Scripts.Managers
         private static Vector3 forwardVector;
         private static Vector3 startClick = -Vector3.one;
 
-        private const int MaxSelection = 50;
+        private const int MaxSelection = 20;
 
-        public static int team = 1;
+        public int m_Team = 1;
 
         public static bool isPlacingBuild = false;
 
@@ -29,17 +31,65 @@ namespace Assets.Scripts.Managers
         public delegate void ProcessSelectableDelegate(ISelectable target);
         public static event ProcessSelectableDelegate OnTarget;
 
+        public float OffsetX = -10;
+        public float OffsetY = 2;
+
+        [SerializeField] private Texture2D defaultCursor;
+        [SerializeField] private Texture2D attackCursor;
+        [SerializeField] private Texture2D gatherCursor;
+        [SerializeField] private Texture2D buildCursor;
+
         private void Update()
         {
             if (isPlacingBuild) return;
 
             MouseInput();
+            ChangeCursor();
+        }
+
+        private void ChangeCursor()
+        {
+            if (SelectedUnits.Count == 0)
+            {
+                Cursor.SetCursor(defaultCursor, new Vector2(OffsetX, OffsetY), CursorMode.Auto);
+                return;
+            }
+
+            if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, Mathf.Infinity))
+                return;
+
+            var target = hit.transform.GetComponent<ISelectable>();
+
+            Texture2D cursorTexture = defaultCursor;
+
+            if (target != null)
+            {
+                Type actionType = target.GetActionWithoutTarget(SelectedUnits[0], SelectedUnits[0].Team);
+
+                if (SelectedUnits[0].HasState(actionType))
+                {
+                    if (actionType == typeof(AttackState))
+                    {
+                        cursorTexture = attackCursor;
+                    }
+                    else if (actionType == typeof(BuildState))
+                    {
+                        cursorTexture = buildCursor;
+                    }
+                    else if (actionType == typeof(GatherState))
+                    {
+                        cursorTexture = gatherCursor;
+                    }
+                }
+            }
+
+            Cursor.SetCursor(cursorTexture, new Vector2(OffsetX, OffsetY), CursorMode.Auto);
         }
 
         private void MouseInput()
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) ClickSelect();
-            if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject()) DragMouseSelect();
+            if (Input.GetMouseButtonDown(0) && !Utils.IsPointerOverUIObject()) ClickSelect();
+            if (Input.GetMouseButtonUp(0) && !Utils.IsPointerOverUIObject()) DragMouseSelect();
 
             MaxUnitsSelected();
 
@@ -62,13 +112,14 @@ namespace Assets.Scripts.Managers
             }
             else
             {
-                OnRightClick?.Invoke(hit.point);
+                if (SelectedUnits[0].Team == m_Team)
+                    OnRightClick?.Invoke(hit.point + new Vector3(0, 0.25f, 0));
 
-                Group(hit.point, SelectedUnits);
+                Group(hit.point.With(y: 0), SelectedUnits);
             }
         }
 
-        private static void ClickSelect()
+        private void ClickSelect()
         {
             DeselectAll();
 
@@ -76,26 +127,27 @@ namespace Assets.Scripts.Managers
 
             var selectedEntity = Utils.GetFromRay<ISelectable>();
 
-            selectedEntity?.Select(team);
+            selectedEntity?.Select(m_Team);
         }
 
-        private static void DragMouseSelect()
+        private void DragMouseSelect()
         {
-            if (startClick == -Vector3.one) return;
+            if (startClick == -Vector3.one || Utils.IsPointerOverUIObject()) return;
 
             SelectionBox = Utils.DragRectangle(startClick);
 
-            foreach (var unit in Unit.Unit.AllUnits.Where(unit => unit.Team == team)) Contained(unit);
+            foreach (var unit in Unit.Unit.AllUnits.Where(unit => unit.Team == m_Team))
+                Contained(unit);
         }
 
-        private static void MaxUnitsSelected()
+        private void MaxUnitsSelected()
         {
             if (SelectedUnits.Count <= MaxSelection || Input.GetMouseButton(0)) return;
 
             for (var i = MaxSelection; i < SelectedUnits.Count; i++) SelectedUnits[i].Deselect();
         }
 
-        public static void DeselectAll()
+        public void DeselectAll()
         {
             var entitiesDuplicate = new ISelectable[SelectedEntities.Count];
 
@@ -104,12 +156,7 @@ namespace Assets.Scripts.Managers
             foreach (var entity in entitiesDuplicate) entity.Deselect();
         }
 
-        public static void Group(Vector3 worldPoint, List<Unit.Unit> selectedUnits)
-        {
-            foreach (var unit in selectedUnits) { unit.MoveToPosition(worldPoint); }
-        }
-
-        public static void Contained(Unit.Unit unit)
+        private void Contained(Unit.Unit unit)
         {
             var cameraPosition = Camera.main.WorldToScreenPoint(unit.transform.position);
 
@@ -119,6 +166,17 @@ namespace Assets.Scripts.Managers
 
             if (SelectionBox.Contains(cameraPosition, true)) unit.Select(unit.Team);
             else unit.Deselect();
+        }
+
+        public void Group(Vector3 worldPoint, List<Unit.Unit> selectedUnits)
+        {
+            foreach (var unit in selectedUnits)
+            {
+                if (unit.Team == m_Team)
+                {
+                    unit.MoveToPosition(worldPoint);
+                }
+            }
         }
     }
 }

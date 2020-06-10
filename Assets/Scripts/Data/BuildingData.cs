@@ -33,5 +33,8 @@ namespace Assets.Scripts.Data
         public Food FoodCost => new Food(foodCost);
         public Rock RockCost => new Rock(rockCost);
         public Gold GoldCost => new Gold(goldCost);
+
+        [Header("OtherData")]
+        public bool IsWallPillar;
     }
 }

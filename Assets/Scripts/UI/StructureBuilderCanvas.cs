@@ -27,29 +27,35 @@ namespace Assets.Scripts.UI
 
                 if (i >= data.AvailableEntities.Count || data.AvailableEntities[i] == null)
                 {
-                    spawnButtons[i].gameObject.SetActive(false);
+                    spawnButtons[i].image.enabled = false;
+                    spawnButtons[i].enabled = false;
                 }
                 else
                 {
-                    spawnButtons[i].gameObject.SetActive(true);
                     spawnButtons[i].image.sprite = data.AvailableEntities[i].GetComponent<IBasicData>().Image;
+                    spawnButtons[i].image.enabled = true;
+                    spawnButtons[i].enabled = true;
 
                     var building = data.AvailableEntities[i];
                     spawnButtons[i].onClick.AddListener(() => BuildingSpawn(building, data.transform.GetComponent<Unit.Unit>()));
+
+                    Tooltip _Tooltip = spawnButtons[i].GetComponent<Tooltip>();
+
+                    _Tooltip.SetData(data.GetComponent<ISpendable>());
                 }
             }
         }
 
         private void BuildingSpawn(GameObject entity, Unit.Unit builder)
         {
-            BuildingPreview buildingPreview = entity.GetComponent<BuildingPreview>();
+            BuildingData buildingData = entity.GetComponent<BuildingData>();
 
-            if (buildingPreview.woodCost <= ResourceManager.Instance.GetResourceAmount(typeof(Wood)) &&
-                buildingPreview.goldCost <= ResourceManager.Instance.GetResourceAmount(typeof(Gold)) &&
-                buildingPreview.foodCost <= ResourceManager.Instance.GetResourceAmount(typeof(Food)))
+            if (buildingData.WoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Wood)) &&
+                buildingData.GoldCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Gold)) &&
+                buildingData.FoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Food)))
             {
-                GameObject building = Instantiate(entity, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
-                building.GetComponent<BuildingPreview>().Worker = builder;
+                BuildingPreview.instance.Worker = builder;
+                BuildingPreview.instance.SetUpBuilding(entity);
             }
         }
 
@@ -59,7 +65,8 @@ namespace Assets.Scripts.UI
 
             foreach (var button in spawnButtons)
             {
-                button.gameObject.SetActive(false);
+                button.enabled = false;
+                button.image.enabled = false;
             }
         }
     }

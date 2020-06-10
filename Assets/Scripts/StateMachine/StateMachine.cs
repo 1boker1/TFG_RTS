@@ -13,7 +13,8 @@ namespace Assets.Scripts.StateMachine
 
         public void ChangeState(State nextState)
         {
-            if (currentState != null) currentState.Exit();
+            if (currentState != null)
+                currentState.Exit();
 
             currentState = nextState;
             currentState.Enter();

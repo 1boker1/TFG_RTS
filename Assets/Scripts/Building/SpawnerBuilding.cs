@@ -3,20 +3,20 @@ using Assets.Scripts.Data;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Building
 {
-    public class SpawnerBuilding : MonoBehaviour, ISpawnData
+    public class SpawnerBuilding : MonoBehaviour
     {
         public GameObject destinationMarker;
-        public GameObject defaultSpawnPoint;
 
         private float timer = 0;
 
         public List<UnitData> queue = new List<UnitData>();
 
-        private Building building;
+        public Building building;
 
         private GameObject unit;
         private GameObject target = null;
@@ -25,20 +25,19 @@ namespace Assets.Scripts.Building
 
         [SerializeField] private int queueCapacity = 6;
 
-        [SerializeField] private List<GameObject> availableEntities;
-        public List<GameObject> AvailableEntities { get => availableEntities; set => availableEntities = value; }
-
         public float SpawnPercentage { get; private set; }
+
+        public delegate void OnUnitSpawn();
+        public OnUnitSpawn OnUnitSpawned;
 
         private void Start()
         {
             building = GetComponent<Building>();
-            destinationMarker.transform.position = new Vector3(999, 999, 999);
         }
 
         private void Update()
         {
-            if (!building.Built) return;
+            if (!building.GetBuildingHealthSystem().Built) return;
 
             if (Input.GetMouseButtonDown(1) && building.Selected) CalculateSpawnPoint();
 
@@ -70,15 +69,17 @@ namespace Assets.Scripts.Building
 
         private void SetSpawnPoint(Vector3 position, bool active)
         {
-            destinationMarker.transform.position = position;
+            destinationMarker.transform.position = MathExtension.CorrectVerticalPosition(position);
             destinationMarker.SetActive(active);
-            destinationMarker.GetComponent<PathRenderer>().SetPositions();
+            destinationMarker.GetComponent<PathRenderer>().SetPositions(transform.position);
         }
 
-        private void GoToSpawnPoint(Unit.Unit unit)
+        private void GoToSpawnPoint(Unit.Unit UnitToCommand)
         {
-            if (!target) unit.MoveToPosition(destinationMarker.transform.position);
-            else unit.OnTarget(target.GetComponent<ISelectable>());
+            UnitToCommand.GetComponent<NavMeshAgent>().Warp(UnitToCommand.transform.position);
+
+            if (!target) UnitToCommand.MoveToPosition(MathExtension.CorrectVerticalPosition(destinationMarker.transform.position, LayerMask.NameToLayer("Floor")));
+            else UnitToCommand.OnTarget(target.GetComponent<ISelectable>());
         }
 
         private void SpawnQueue()
@@ -91,39 +92,55 @@ namespace Assets.Scripts.Building
 
             if (timer >= timeToSpawn)
             {
-                Spawn(queue[0]);
+                if (PopulationManager.Instance.CanSpawn())
+                {
+                    Spawn(queue[0]);
 
-                queue.Remove(queue[0]);
+                    queue.Remove(queue[0]);
 
-                timer = 0;
+                    timer = 0;
+
+                    OnUnitSpawned?.Invoke();
+                }
+                else
+                {
+                    timer = timeToSpawn;
+                }
             }
 
             SpawnPercentage = timer / timeToSpawn;
         }
 
-        public void Spawn(UnitData unit)
+        public void Spawn(UnitData UnitToSpawn)
         {
-            unit = Instantiate(unit);
+            UnitToSpawn = Instantiate(UnitToSpawn);
 
-            unit.team = building.Team;
-            unit.transform.position = defaultSpawnPoint.transform.position;
-            unit.transform.LookAt(unit.transform.position + new Vector3(-10, 0, 0));
+            UnitToSpawn.team = building.Team;
+            UnitToSpawn.transform.position = GetComponent<Collider>().bounds.ClosestPoint(destinationMarker.transform.position);
+            UnitToSpawn.transform.LookAt(UnitToSpawn.transform.position + new Vector3(-10, 0, 0));
+            UnitToSpawn.GetComponent<Unit.Unit>().Team = building.Team;
 
-            GoToSpawnPoint(unit.GetComponent<Unit.Unit>());
+            GoToSpawnPoint(UnitToSpawn.GetComponent<Unit.Unit>());
         }
 
-        public void AddToQueue(UnitData unit)
+        public void AddToQueue(UnitData UnitToAdd)
         {
-            if (unit == null) return;
+            if (UnitToAdd == null || queue.Count >= queueCapacity)
+                return;
 
-            if (queue.Count < queueCapacity)
-            {
-                if (Utils.HaveEnoughResources(unit.WoodCost, unit.FoodCost, unit.GoldCost, unit.RockCost)) queue.Add(unit);
-            }
-            else
-            {
-                Debug.Log("Unit Queue is full");
-            }
+            if (Utils.HaveEnoughResources(UnitToAdd.WoodCost, UnitToAdd.FoodCost, UnitToAdd.GoldCost, UnitToAdd.RockCost))
+                queue.Add(UnitToAdd);
+        }
+
+        public void RemoveFromQueue(int i)
+        {
+            if (queue.Count <= i)
+                return;
+
+            if (i == 0)
+                timer = 0;
+
+            queue.RemoveAt(i);
         }
     }
 }

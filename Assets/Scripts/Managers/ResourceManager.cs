@@ -27,6 +27,13 @@ namespace Assets.Scripts.Managers
 
             if (Application.isEditor) CheatCode();
 
+            //Cheat
+
+            foreach (var resourceType in resourceTypes)
+            {
+                resourceType.amount += 500;
+            }
+
             UpdateUI();
         }
 

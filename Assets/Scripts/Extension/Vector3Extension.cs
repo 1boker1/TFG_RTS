@@ -19,6 +19,24 @@ public static class MathExtension
         return Vector3.Distance(first, second);
     }
 
+    public static Vector3 CorrectVerticalPosition(Vector3 Position, LayerMask Layer)
+    {
+        Ray _Ray = new Ray(Position + (Vector3.up * 10), Vector3.down);
+
+        return Physics.Raycast(_Ray, out var _Hit, 15f, Layer) ? _Hit.point : Position;
+    }
+
+    public static Vector3 CorrectVerticalPosition(Vector3 Position)
+    {
+        Ray _Ray = new Ray(Position + (Vector3.up * 10), Vector3.down);
+
+        if (Physics.Raycast(_Ray, out var _Hit, 15f))
+            return _Hit.point;
+
+        return Position;
+    }
+
+
     public static float InvertMouseY(float y)
     {
         return Screen.height - y;

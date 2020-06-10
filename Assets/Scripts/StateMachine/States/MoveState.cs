@@ -11,7 +11,6 @@ namespace Assets.Scripts.StateMachine.States
         private Unit.Unit unit;
 
         private NavMeshAgent navMeshAgent;
-        private NavMeshObstacle navMeshObstacle;
 
         [SerializeField] private UnityEvent OnDestinationReached;
 
@@ -19,28 +18,27 @@ namespace Assets.Scripts.StateMachine.States
         {
             Initialise();
 
-            navMeshObstacle.enabled = false;
-            navMeshAgent.enabled = true;
             navMeshAgent.SetDestination(unit.MoveDestination);
+
+            SetAnimation();
         }
 
         public override void Execute()
         {
-            if (Utils.InRange(transform.position, unit.MoveDestination, navMeshAgent.stoppingDistance)) OnDestinationReached?.Invoke();
+            if (Utils.InRange(transform.position, unit.MoveDestination, navMeshAgent.stoppingDistance))
+                OnDestinationReached?.Invoke();
         }
 
         public override void Exit()
         {
             navMeshAgent.SetDestination(navMeshAgent.transform.position);
-            navMeshAgent.enabled = false;
-            navMeshObstacle.enabled = true;
+            animator.SetBool(AnimationBool, false);
         }
 
         private void Initialise()
         {
             if (unit == null) unit = GetComponent<Unit.Unit>();
             if (navMeshAgent == null) navMeshAgent = GetComponent<NavMeshAgent>();
-            if (navMeshObstacle == null) navMeshObstacle = GetComponent<NavMeshObstacle>();
         }
     }
 }
