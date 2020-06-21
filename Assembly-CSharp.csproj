@@ -96,6 +96,9 @@
     <Compile Include="Assets\Scripts\Managers\Utils.cs" />
     <Compile Include="Assets\Scripts\Managers\Vector3Event.cs" />
     <Compile Include="Assets\Scripts\MiniMap\MiniMap.cs" />
+    <Compile Include="Assets\Scripts\MissionSystem\DestroyObjective.cs" />
+    <Compile Include="Assets\Scripts\MissionSystem\GameObjectives.cs" />
+    <Compile Include="Assets\Scripts\MissionSystem\Objective.cs" />
     <Compile Include="Assets\Scripts\Object Pooling\IPoolable.cs" />
     <Compile Include="Assets\Scripts\Object Pooling\Pool.cs" />
     <Compile Include="Assets\Scripts\Object Pooling\PoolSystem.cs" />
@@ -141,13 +144,13 @@
     <Compile Include="Assets\Scripts\Unit\UnitHealthSystem.cs" />
     <Compile Include="Assets\SelectObject.cs" />
     <Compile Include="Assets\TEST\ZoneToCapture.cs" />
-    <None Include="Assets\PolygonPrototype\Shaders\Prototype_Glass_Global.shader" />
+    <None Include="Assets\AssetStore\PolygonPrototype\Shaders\Prototype_Glass_Global.shader" />
     <None Include="Assets\AssetStore\SimpleFX\Materials\UnlitVertexColour_Alpha.shader" />
-    <None Include="Assets\PolygonPrototype\Shaders\Prototype_Object.shader" />
-    <None Include="Assets\PolygonPrototype\Shaders\Prototype_Global.shader" />
+    <None Include="Assets\AssetStore\PolygonPrototype\Shaders\Prototype_Object.shader" />
+    <None Include="Assets\AssetStore\PolygonPrototype\Shaders\Prototype_Global.shader" />
     <None Include="Assets\TEST\FogOdWar.shader" />
     <None Include="Assets\TEST\zTest.shader" />
-    <None Include="Assets\PolygonPrototype\Shaders\Prototype_Glass_Object.shader" />
+    <None Include="Assets\AssetStore\PolygonPrototype\Shaders\Prototype_Glass_Object.shader" />
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>C:/Users/Nil/Desktop/RTS 2019.3/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class PauseMenu : MonoBehaviour
 
     public void Exit()
     {
-
+		Time.timeScale=1;
+		Fade.Instance.AddEventOnEndFade(()=>{SceneManager.LoadScene(0);Fade.Instance.FadeOut();});
+		Fade.Instance.FadeIn();
     }
 }

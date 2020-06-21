@@ -36,7 +36,7 @@ public class CameraControl : MonoBehaviour
         Zoom();
         CameraRectangle();
 
-        if (Input.GetKey("space"))
+        if (Input.GetKey("space") && SelectionManager.SelectedEntities.Count!=0)
             CenterCamera();
     }
 
@@ -127,7 +127,7 @@ public class CameraControl : MonoBehaviour
 
     public void CenterCamera()
     {
-        Vector3 centerOfMass = Utils.CenterOfMass(SelectionManager.SelectedUnits);
+        Vector3 centerOfMass = Utils.CenterOfMass(SelectionManager.SelectedEntities);
 
         float distance = transform.position.y / Mathf.Sin(90 - transform.rotation.eulerAngles.x);
 

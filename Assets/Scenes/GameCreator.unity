@@ -531,7 +531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Persistent: 1
-  SceneToLoadIndex: 2
+  SceneToLoadIndex: 1
   MapPresets:
   - {fileID: 11400000, guid: 4c72e148b68f98d4383c23a0f800388a, type: 2}
   - {fileID: 11400000, guid: 27c77f4911281c840913e27a9650eb7e, type: 2}

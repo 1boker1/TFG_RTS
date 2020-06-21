@@ -25,6 +25,8 @@ namespace Assets.Scripts.ProceduralGeneration
 
         public void GenerateTrees(float[,] _TreeMap, float[,] FinalNoiseMap, int Seed, float VertexDistance)
         {
+			ClearTrees();
+
             int _MapWidth = _TreeMap.GetLength(0);
             int _MapHeight = _TreeMap.GetLength(1);
 
@@ -40,36 +42,53 @@ namespace Assets.Scripts.ProceduralGeneration
                         {
                             float _OffsetX = UnityEngine.Random.value * MaxOffset;
                             float _OffsetZ = UnityEngine.Random.value * MaxOffset;
+							Vector2 _OffsetXZ=UnityEngine.Random.insideUnitCircle*MaxOffset;
                             float _OffsetRotation = UnityEngine.Random.value * 360;
-                            Vector3 _Position = new Vector3(x * VertexDistance * 1.25f + _OffsetX, FinalNoiseMap[x, z],
-                                z * VertexDistance * 1.25f + _OffsetZ);
+                            Vector3 _Position = new Vector3(x * VertexDistance * 1.25f + _OffsetXZ.x, FinalNoiseMap[x, z],
+                                z * VertexDistance * 1.25f + _OffsetXZ.y);
 
                             if (HasGround(_Position, out var _Hit))
                             {
-                                if (GeneratedTrees.Count > 0)
-                                {
-                                    GeneratedTrees[0].transform.position = _Position;
-                                    GeneratedTrees[0].transform.rotation = Quaternion.Euler(0, _OffsetRotation, 0);
-                                    GeneratedTrees[0].SetActive(true);
-                                    ActiveTrees.Add(GeneratedTrees[0]);
-                                    GeneratedTrees.RemoveAt(0);
-                                }
-                                else
-                                {
-                                    int _Rotation = _Offset.Next(0, 180);
-                                    int _TreeIndex = _Offset.Next(0, treePrefabs.Count);
+								if(PoissonDiscSamplingCorrection(_Position))
+								{
+									if (GeneratedTrees.Count > 0)
+									{
+									    GeneratedTrees[0].transform.position = _Position;
+									    GeneratedTrees[0].transform.rotation = Quaternion.Euler(0, _OffsetRotation, 0);
+									    GeneratedTrees[0].SetActive(true);
+									    ActiveTrees.Add(GeneratedTrees[0]);
+									    GeneratedTrees.RemoveAt(0);
+									}
+									else
+									{
+									    int _Rotation = _Offset.Next(0, 180);
+									    int _TreeIndex = _Offset.Next(0, treePrefabs.Count);
 
-                                    GameObject _Tree = Instantiate(treePrefabs[_TreeIndex], _Hit.point, Quaternion.Euler(0, _Rotation, 0));
-                                    _Tree.transform.parent = Parent;
+									    GameObject _Tree = Instantiate(treePrefabs[_TreeIndex], _Hit.point, Quaternion.Euler(0, _Rotation, 0));
+									    _Tree.transform.parent = Parent;
 
-                                    ActiveTrees.Add(_Tree);
-                                }
+									    ActiveTrees.Add(_Tree);
+									}
+								}
                             }
                         }
                     }
                 }
             }
         }
+		public bool PoissonDiscSamplingCorrection(Vector3 SpawnPosition)
+		{
+			Collider[] _Colliders =	Physics.OverlapSphere(SpawnPosition, 4);
+
+			foreach(Collider _Collider in _Colliders)
+			{
+				if(ActiveTrees.Contains(_Collider.gameObject))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
         [ContextMenu("Generate TreePool")]
         public void CreateTreePool()
         {
@@ -109,7 +128,7 @@ namespace Assets.Scripts.ProceduralGeneration
             return Physics.Raycast(_Ray, out Hit, 2);
         }
 
-        public void ClearTrees(Transform Parent)
+        public void ClearTrees()
         {
             Transform[] _Child = Parent.GetComponentsInChildren<Transform>();
 
@@ -123,6 +142,8 @@ namespace Assets.Scripts.ProceduralGeneration
                         Destroy(_Child[i].gameObject);
                 }
             }
+
+			ActiveTrees.Clear();
         }
     }
 }

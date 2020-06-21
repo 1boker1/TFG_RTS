@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Resources;
 using JetBrains.Annotations;
@@ -113,17 +114,19 @@ namespace Assets.Scripts.Managers
             return rectangle;
         }
 
-        public static Vector3 CenterOfMass(List<Unit.Unit> units)
+        public static Vector3 CenterOfMass(BindingList<ISelectable> Entities)
         {
+			if(Entities.Count==0)
+				return Vector3.zero;
+
             Vector3 centerOfMass = new Vector3();
 
-
-            foreach (var unit in units)
+            foreach (var unit in Entities)
             {
                 centerOfMass += unit.transform.position;
             }
 
-            return centerOfMass / (units.Count);
+            return centerOfMass / (Entities.Count);
         }
 
         public static List<Vector3> GetPositions(List<Unit.Unit> units, Vector3 worldPoint, Vector3 forwardVector, Vector3 perpendicularVector)

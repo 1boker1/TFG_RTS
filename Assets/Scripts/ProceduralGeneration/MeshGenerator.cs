@@ -4,14 +4,18 @@ using UnityEditor;
 using UnityEngine;
 using Unity.Jobs;
 using UnityEngine.AI;
-
+using System;
+#if UNITY_EDITOR
+using UnityEditor.Formats.Fbx.Exporter;
+using System.IO;
+#endif
 namespace Assets.Scripts.ProceduralGeneration
 {
     public class MeshGenerator : MonoBehaviour
     {
         public MapPreset Preset;
         public bool UsePreset;
-
+		[Min(0)]
         public int Seed;
         public Vector2 Offset;
 
@@ -33,7 +37,7 @@ namespace Assets.Scripts.ProceduralGeneration
 
         [Range(0.01f, 1f)] public float RoundAmount;
 
-        public MeshFilter meshFilter;
+		public MeshFilter meshFilter;
         public MeshRenderer meshRenderer;
         public NavMeshSurface navMesh;
 
@@ -60,11 +64,6 @@ namespace Assets.Scripts.ProceduralGeneration
             }
         }
 
-        private void OnValidate()
-        {
-            Seed = Mathf.Max(Seed, 0);
-        }
-
         public void GenerateMesh()
         {
             StartTime = Time.realtimeSinceStartup;
@@ -74,6 +73,8 @@ namespace Assets.Scripts.ProceduralGeneration
                 MeshGenerator meshGenerator = this;
                 Preset.LoadPreset(ref meshGenerator);
             }
+
+			treeGenerator.ClearTrees();
 
             mesh = new Mesh();
             meshFilter.mesh = mesh;
@@ -339,5 +340,13 @@ namespace Assets.Scripts.ProceduralGeneration
         {
             return Mathf.Round(Value * RoundAmount) / RoundAmount;
         }
+
+		public void SaveAsFBX(string Name)
+		{
+#if UNITY_EDITOR
+			string filePath = Path.Combine(Application.dataPath, "Editor/"+Name+".fbx");
+			ModelExporter.ExportObject(filePath, meshFilter.gameObject);
+#endif
+		}
     }
 }

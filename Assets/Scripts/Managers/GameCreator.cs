@@ -83,6 +83,8 @@ public class GameCreator : MonoBehaviour
 
     private void OnGameLoaded(Scene scene, LoadSceneMode mode)
     {
+		SceneManager.sceneLoaded-=OnGameLoaded;
+
         CreateMap();
 
         Fade.Instance.AddEventOnEndFade(CreateMiniMap);
