@@ -29,14 +29,15 @@ namespace Assets.Scripts.Unit
         public int Team { get; set; }
 
         private List<State> States;
+	
+		public delegate void OnUnitDestroy(Unit unit);
+		public OnUnitDestroy OnUnitDestroyed;
 
         private void Awake()
         {
             States = GetComponents<State>().ToList();
             animator = GetComponent<Animator>();
             Team = unitData.team;
-
-            ChangeState(typeof(IdleState));
         }
 
         private void Start()
@@ -188,6 +189,8 @@ namespace Assets.Scripts.Unit
 
         private void OnDestroy()
         {
+			OnUnitDestroyed?.Invoke(this);
+
             AllUnits.Remove(this);
 
             if (SelectionManager.Instance != null)

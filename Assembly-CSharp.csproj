@@ -67,6 +67,7 @@
     <Compile Include="Assets\AssetStore\Crafting Mecanim Animation Pack FREE\Code\SmoothFollow.cs" />
     <Compile Include="Assets\AssetStore\MeshCombiner\Scripts\MeshCombiner.cs" />
     <Compile Include="Assets\Prefabs\ClickArrow\ClickArrow.cs" />
+    <Compile Include="Assets\Scripts\AI\EnemyCamp.cs" />
     <Compile Include="Assets\Scripts\Building\Building.cs" />
     <Compile Include="Assets\Scripts\Building\BuildingConstructor.cs" />
     <Compile Include="Assets\Scripts\Building\BuildingHealthSystem.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Assets\Scripts\Managers\Utils.cs" />
     <Compile Include="Assets\Scripts\Managers\Vector3Event.cs" />
     <Compile Include="Assets\Scripts\MiniMap\MiniMap.cs" />
-    <Compile Include="Assets\Scripts\MissionSystem\DestroyObjective.cs" />
+    <Compile Include="Assets\Scripts\MissionSystem\DestroyEnemyCampObjective.cs" />
     <Compile Include="Assets\Scripts\MissionSystem\GameObjectives.cs" />
     <Compile Include="Assets\Scripts\MissionSystem\Objective.cs" />
     <Compile Include="Assets\Scripts\Object Pooling\IPoolable.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Assets\Scripts\StateMachine\States\GatherState.cs" />
     <Compile Include="Assets\Scripts\StateMachine\States\IdleState.cs" />
     <Compile Include="Assets\Scripts\StateMachine\States\MoveState.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\States\PatrolAreaState.cs" />
     <Compile Include="Assets\Scripts\TESTING\Arrow.cs" />
     <Compile Include="Assets\Scripts\TESTING\CheatManager.cs" />
     <Compile Include="Assets\Scripts\TESTING\FloatVariable.cs" />

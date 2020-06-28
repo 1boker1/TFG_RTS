@@ -16,13 +16,17 @@ public class GameCreator : MonoBehaviour
 
     public int SceneToLoadIndex;
 
-    [SerializeField] private List<MapPreset> MapPresets;
+    [SerializeField] private List<MapPreset> MapPresets=new List<MapPreset>();
+
+	public GameObject mapValuesPanel;
 
     public Dropdown mapDropdown;
     public InputField seedInput;
 
+	[Header("Player Starting Camp")]
     public GameObject playerStartCamp;
 
+	[Header("Resources")]
     public GameObject GoldPrefab;
     public int GoldAmount;
     public GameObject StonePrefab;
@@ -30,6 +34,15 @@ public class GameCreator : MonoBehaviour
     public GameObject FoodPrefab;
     public int FoodAmount;
 
+	[Header("Objectives")]
+	public List<Objective> ObjectivesPrefab=new List<Objective>();
+
+
+	public GameObject loadingPanel;
+	public Image loadingBar;
+	public Text loadingText;
+
+	private Canvas canvas;
 
     private void Awake()
     {
@@ -42,6 +55,10 @@ public class GameCreator : MonoBehaviour
 
     private void Start()
     {
+		mapValuesPanel.SetActive(true);
+		loadingPanel.SetActive(false);
+		canvas=GetComponentInChildren<Canvas>();
+		canvas.sortingOrder=0;
         SetMapPresets();
 
         seedInput.characterValidation = InputField.CharacterValidation.Integer;
@@ -77,6 +94,10 @@ public class GameCreator : MonoBehaviour
 
     private void LoadScene()
     {
+		mapValuesPanel.SetActive(false);
+		loadingPanel.SetActive(true);
+		canvas.sortingOrder=2;
+
         SceneManager.sceneLoaded += OnGameLoaded;
         SceneManager.LoadSceneAsync(SceneToLoadIndex);
     }
@@ -85,9 +106,12 @@ public class GameCreator : MonoBehaviour
     {
 		SceneManager.sceneLoaded-=OnGameLoaded;
 
-        CreateMap();
+       CreateMap();    
 
-        Fade.Instance.AddEventOnEndFade(CreateMiniMap);
+		loadingPanel.SetActive(false);
+		canvas.sortingOrder=0;
+
+		Fade.Instance.AddEventOnEndFade(CreateMiniMap);
         Fade.Instance.FadeOut();
     }
 
@@ -108,16 +132,14 @@ public class GameCreator : MonoBehaviour
         _MeshGenerator.GenerateMesh();
 
         CreateResources(_MeshGenerator);
-        CreateMissions();
         CreatePlayer(_MeshGenerator);
-
         _MeshGenerator.BuildNavigationMesh();
+        CreateMissions(_MeshGenerator);
     }
 
     private void CreateResources(MeshGenerator _MeshGenerator)
     {
         _MeshGenerator.GenerateTreeMap();
-
         CreateResource(GoldPrefab, GoldAmount, _MeshGenerator);
         CreateResource(StonePrefab, StoneAmount, _MeshGenerator);
     }
@@ -137,7 +159,6 @@ public class GameCreator : MonoBehaviour
 
                 Collider[] _Colliders = Physics.OverlapSphere(_Position, 150);
                 bool _Colliding = false;
-
 
                 for (int x = 0; x < _Colliders.Length; x++)
                 {
@@ -159,9 +180,12 @@ public class GameCreator : MonoBehaviour
         Debug.Log("Created " + (amount - _SkippedInstances) + " / " + amount + " of " + Prefab.GetComponent<Resource>().resourceType);
     }
 
-    private void CreateMissions()
+    private void CreateMissions(MeshGenerator _MeshGenerator)
     {
+		int _Index=UnityEngine.Random.Range(0, ObjectivesPrefab.Count);
 
+		Objective _Objective=Instantiate(ObjectivesPrefab[_Index]);
+		ObjectivesPrefab[_Index].InitObjective(_MeshGenerator);
     }
 
     private void CreatePlayer(MeshGenerator _MeshGenerator)
@@ -175,7 +199,6 @@ public class GameCreator : MonoBehaviour
 
         CameraControl.CenterCamera(_InitialCamp.transform.position);
     }
-
 
     private void CreateMiniMap()
     {

@@ -38,8 +38,7 @@ namespace Assets.Scripts.MiniMap
 
             StartCoroutine(DelayedRendering());
         }
-
-        public void SetUp()
+		public void SetUp()
         {
             mapInfo = FindObjectOfType<MeshGenerator>();
             mainCamera = Camera.main;
@@ -61,8 +60,7 @@ namespace Assets.Scripts.MiniMap
         public IEnumerator DelayedRendering()
         {
             while (true)
-            {
-                
+            {		
                 minimapCamera.Render();
                 yield return new WaitForSeconds(0.04166667f);
             }

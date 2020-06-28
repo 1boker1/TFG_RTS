@@ -293,3 +293,7 @@ C:\Users\Nil\Desktop\RTS\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cach
 C:\Users\Nil\Desktop\RTS\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\Nil\Desktop\RTS\obj\Debug\Assembly-CSharp.dll
 C:\Users\Nil\Desktop\RTS\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Nil\Desktop\RTS 2019.3\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\Nil\Desktop\RTS 2019.3\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+C:\Users\Nil\Desktop\RTS 2019.3\obj\Debug\Assembly-CSharp.dll
+C:\Users\Nil\Desktop\RTS 2019.3\obj\Debug\Assembly-CSharp.pdb

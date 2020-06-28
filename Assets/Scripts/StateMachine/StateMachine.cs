@@ -7,7 +7,12 @@ namespace Assets.Scripts.StateMachine
     {
         public State currentState;
 
-        private void Update() => ExecuteState();
+		private void Start() 
+		{
+			currentState?.Enter();
+		}
+
+		private void Update() => ExecuteState();
 
         private void OnGUI() => DisplayState();
 
