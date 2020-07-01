@@ -3,19 +3,29 @@ using System.Collections.Generic;
 using Assets.Scripts.Managers;
 using UnityEngine;
 
-public class CheatManager : Singleton<CheatManager>
+public class CheatManager : MonoBehaviour
 {
     public bool SeeHelpers { get; private set; }
+	public static CheatManager Instance;
 
-    void Update()
+	private void Awake()
+	{
+		if(Instance==null)
+				Instance=this;
+			if(Instance!=this)
+				Destroy(gameObject);
+
+		Debug.LogError("Quitar los cheats para la build final");
+	}
+	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C)) SeeHelpers = !SeeHelpers;
-        if (Input.GetKeyDown(KeyCode.RightControl)) Time.timeScale = 4;
+        //if (Input.GetKeyDown(KeyCode.C)) SeeHelpers = !SeeHelpers;
+        if (Input.GetKeyDown(KeyCode.RightControl)) Time.timeScale = 5;
         if (Input.GetKeyUp(KeyCode.RightControl)) Time.timeScale = 1;
         if (Input.GetKeyDown(KeyCode.RightShift)) Time.timeScale = 0.5f;
         if (Input.GetKeyUp(KeyCode.RightShift)) Time.timeScale = 1;
-        if (Input.GetKeyDown(KeyCode.Delete))
-            foreach (var unit in SelectionManager.SelectedUnits)
-                Destroy(unit.gameObject);
+        //if (Input.GetKeyDown(KeyCode.Delete))
+        //    foreach (var unit in SelectionManager.SelectedUnits)
+        //        Destroy(unit.gameObject);
     }
 }

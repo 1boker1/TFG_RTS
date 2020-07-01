@@ -20,8 +20,8 @@ namespace Assets.Scripts.ProceduralGeneration
         public Vector2 Offset;
 
         [Space(20)]
-        [Range(0, 250)] public int MapWidth;
-        [Range(0, 250)] public int MapHeight;
+        [Range(1, 250)] public int MapWidth;
+        [Range(1, 250)] public int MapDepth;
 
         public float VertexDistance;
         public float HeightMultiplier;
@@ -91,10 +91,10 @@ namespace Assets.Scripts.ProceduralGeneration
 
         public void CreateMesh()
         {
-            vertices = new Vector3[(MapWidth + 1) * (MapHeight + 1)];
-            FinalNoiseMap = new float[MapWidth + 1, MapHeight + 1];
+            vertices = new Vector3[(MapWidth + 1) * (MapDepth + 1)];
+            FinalNoiseMap = new float[MapWidth + 1, MapDepth + 1];
 
-            float[,] _NoiseMap = Noise.GenerateNoiseMap(MapWidth + 1, MapHeight + 1, Seed, NoiseScale, Octaves, Persistance, Lacunarity, Offset);
+            float[,] _NoiseMap = Noise.GenerateNoiseMap(MapWidth + 1, MapDepth + 1, Seed, NoiseScale, Octaves, Persistance, Lacunarity, Offset);
 
             ShiftNoiseMapBy(HeightShift, _NoiseMap);
 
@@ -103,7 +103,7 @@ namespace Assets.Scripts.ProceduralGeneration
             MaxHeight = float.MinValue;
             MinHeight = float.MaxValue;
 
-            for (int z = 0; z <= MapHeight; z++)
+            for (int z = 0; z <= MapDepth; z++)
             {
                 for (int x = 0; x <= MapWidth; x++)
                 {
@@ -132,12 +132,12 @@ namespace Assets.Scripts.ProceduralGeneration
                 }
             }
 
-            triangles = new int[MapWidth * MapHeight * 6];
+            triangles = new int[MapWidth * MapDepth * 6];
 
             int vert = 0;
             int tris = 0;
 
-            for (int z = 0; z < MapHeight; z++)
+            for (int z = 0; z < MapDepth; z++)
             {
                 for (int x = 0; x < MapWidth; x++)
                 {
@@ -191,15 +191,20 @@ namespace Assets.Scripts.ProceduralGeneration
             if (collider == null)
                 collider = meshRenderer.gameObject.AddComponent<MeshCollider>();
 
-            collider.sharedMesh = mesh;
+            collider.sharedMesh = mesh;collider.sharedMesh = mesh;
 
             Debug.Log("Mesh: " + ((Time.realtimeSinceStartup - StartTime) * 1000f) + "ms");
         }
 
         public void BuildNavigationMesh()
         {
-            navMesh.size = new Vector3(MapWidth * VertexDistance, 1, MapHeight * VertexDistance);
-            navMesh.center = new Vector3(MapWidth * VertexDistance * 0.5f, 0, MapHeight * VertexDistance * 0.5f);
+			MeshCollider collider = meshRenderer.GetComponent<MeshCollider>();
+
+            if (collider == null)
+                collider = meshRenderer.gameObject.AddComponent<MeshCollider>();
+			collider.sharedMesh = mesh;
+            navMesh.size = new Vector3(MapWidth * VertexDistance, 1, MapDepth * VertexDistance);
+            navMesh.center = new Vector3(MapWidth * VertexDistance * 0.5f, 0, MapDepth * VertexDistance * 0.5f);
             navMesh.BuildNavMesh();
 
             Debug.Log("NavMesh: " + ((Time.realtimeSinceStartup - StartTime) * 1000f) + "ms");
@@ -207,7 +212,7 @@ namespace Assets.Scripts.ProceduralGeneration
 
         public void GenerateTreeMap()
         {
-            float[,] _TreeMap = Noise.GenerateNoiseMap(MapWidth/(5/4) + 1, MapHeight/(5/4) + 1, Seed * Seed + 1, NoiseScale * .5f, Octaves, Persistance, Lacunarity, Offset);
+            float[,] _TreeMap = Noise.GenerateNoiseMap(MapWidth/(5/4) + 1, MapDepth/(5/4) + 1, Seed * Seed + 1, NoiseScale * .5f, Octaves, Persistance, Lacunarity, Offset);
 
             treeGenerator.GenerateTrees(_TreeMap, FinalNoiseMap, Seed, VertexDistance);
 
@@ -239,7 +244,7 @@ namespace Assets.Scripts.ProceduralGeneration
                     _InvalidPositions.Add(_RandomRegionPoint);
 
                     if (_RandomRegionPoint.x > 25 && _RandomRegionPoint.x < MapWidth - 25 &&
-                    _RandomRegionPoint.z > 25 && _RandomRegionPoint.z < MapHeight - 25)
+                    _RandomRegionPoint.z > 25 && _RandomRegionPoint.z < MapDepth - 25)
                     {
                         _Position = (_RandomRegionPoint * VertexDistance).With(y: 2);
 
@@ -272,11 +277,11 @@ namespace Assets.Scripts.ProceduralGeneration
         public List<List<Vector3>> GetRegions()
         {
             List<List<Vector3>> regions = new List<List<Vector3>>();
-            int[,] mapFlags = new int[MapWidth, MapHeight];
+            int[,] mapFlags = new int[MapWidth, MapDepth];
 
             for (int x = 0; x < MapWidth; x++)
             {
-                for (int y = 0; y < MapHeight; y++)
+                for (int y = 0; y < MapDepth; y++)
                 {
                     if (mapFlags[x, y] == 0 && Mathf.Abs(FinalNoiseMap[x, y]) < 1)
                     {
@@ -300,7 +305,7 @@ namespace Assets.Scripts.ProceduralGeneration
         List<Vector3> GetRegionTiles(int startX, int startY)
         {
             List<Vector3> tiles = new List<Vector3>();
-            int[,] mapFlags = new int[MapWidth, MapHeight];
+            int[,] mapFlags = new int[MapWidth, MapDepth];
             int tileType = (int)FinalNoiseMap[startX, startY];
 
             Queue<Vector3> queue = new Queue<Vector3>();
@@ -333,7 +338,7 @@ namespace Assets.Scripts.ProceduralGeneration
 
         private bool IsInMapRange(int x, int y)
         {
-            return x >= 0 && x < MapWidth && y >= 0 && y < MapHeight;
+            return x >= 0 && x < MapWidth && y >= 0 && y < MapDepth;
         }
 
         public float Round(float Value)
@@ -344,7 +349,7 @@ namespace Assets.Scripts.ProceduralGeneration
 		public void SaveAsFBX(string Name)
 		{
 #if UNITY_EDITOR
-			string filePath = Path.Combine(Application.dataPath, "Editor/"+Name+".fbx");
+			string filePath = Path.Combine(Application.dataPath, "Resources/"+Name+".fbx");
 			ModelExporter.ExportObject(filePath, meshFilter.gameObject);
 #endif
 		}

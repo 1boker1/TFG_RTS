@@ -44,7 +44,7 @@ namespace Assets.Scripts.MiniMap
             mainCamera = Camera.main;
             destination = mainCamera.transform.position;
 
-            MapSize = mapInfo.MapHeight * mapInfo.VertexDistance * 0.5f;
+            MapSize = mapInfo.MapDepth * mapInfo.VertexDistance * 0.5f;
             minimapCamera.orthographicSize = MapSize;
             minimapCamera.transform.position = new Vector3(MapSize, 200f, MapSize);
 

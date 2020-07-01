@@ -725,6 +725,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c72e148b68f98d4383c23a0f800388a, type: 2}
   - {fileID: 11400000, guid: 27c77f4911281c840913e27a9650eb7e, type: 2}
   - {fileID: 11400000, guid: c986f73909a97c44b90fcd3c933f722a, type: 2}
+  - {fileID: 11400000, guid: d7f5c51fa8463a0489179bf559cf58db, type: 2}
+  - {fileID: 11400000, guid: 883741de9bf3e214c8b283e0f4a5608c, type: 2}
   mapValuesPanel: {fileID: 451450071}
   mapDropdown: {fileID: 1713195755}
   seedInput: {fileID: 458869433}
@@ -736,8 +738,9 @@ MonoBehaviour:
   StonePrefab: {fileID: 9212612175104416439, guid: e5149cd362485db498b660acc106a421,
     type: 3}
   StoneAmount: 20
-  FoodPrefab: {fileID: 0}
-  FoodAmount: 0
+  FoodPrefab: {fileID: 5389950526891417623, guid: ab85fabee8c9c4a4aafe03790340402b,
+    type: 3}
+  FoodAmount: 20
   ObjectivesPrefab:
   - {fileID: 478295597956660650, guid: 420bd76d3959bca4981e0dfe30391ec4, type: 3}
   loadingPanel: {fileID: 484308761}

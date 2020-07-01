@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 8703649173266884257}
   - component: {fileID: 8841225213205743671}
   - component: {fileID: 2355593269118583232}
+  - component: {fileID: 2079987623}
   m_Layer: 5
   m_Name: SpawnButton#3
   m_TagString: Untagged
@@ -99,10 +100,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 315, y: -92.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8703649173266884257
 CanvasRenderer:
@@ -183,6 +184,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2079987623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680872053088951610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7024760143299104905
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +208,7 @@ GameObject:
   - component: {fileID: 7888059085569468620}
   - component: {fileID: 76545411592248746}
   - component: {fileID: 6804560457162689510}
+  - component: {fileID: 439158934}
   m_Layer: 5
   m_Name: SpawnButton#4
   m_TagString: Untagged
@@ -216,10 +230,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 85, y: -207.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7888059085569468620
 CanvasRenderer:
@@ -300,6 +314,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &439158934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7024760143299104905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8269234363539200596
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,6 +338,7 @@ GameObject:
   - component: {fileID: 1291388307552841985}
   - component: {fileID: 5827312678705934858}
   - component: {fileID: 1132173215131414212}
+  - component: {fileID: 1111085172}
   m_Layer: 5
   m_Name: SpawnButton#2
   m_TagString: Untagged
@@ -333,10 +360,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -92.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1291388307552841985
 CanvasRenderer:
@@ -417,6 +444,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1111085172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8269234363539200596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8349733875661867517
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +468,7 @@ GameObject:
   - component: {fileID: 6617768855674844112}
   - component: {fileID: 1104738854834160145}
   - component: {fileID: 4652065996804076626}
+  - component: {fileID: 2035679459}
   m_Layer: 5
   m_Name: SpawnButton#1
   m_TagString: Untagged
@@ -450,10 +490,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 85, y: -92.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6617768855674844112
 CanvasRenderer:
@@ -534,6 +574,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2035679459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349733875661867517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8509132463355396579
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +598,7 @@ GameObject:
   - component: {fileID: 3562736268365031958}
   - component: {fileID: 5253432473422356914}
   - component: {fileID: 1698537365098049157}
+  - component: {fileID: 1836099673}
   m_Layer: 5
   m_Name: SpawnButton#6
   m_TagString: Untagged
@@ -567,10 +620,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 315, y: -207.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3562736268365031958
 CanvasRenderer:
@@ -651,6 +704,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1836099673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509132463355396579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8787019624672825142
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,6 +823,7 @@ GameObject:
   - component: {fileID: 2159697898324336797}
   - component: {fileID: 8261380840558204738}
   - component: {fileID: 5214502537807278256}
+  - component: {fileID: 95876285}
   m_Layer: 5
   m_Name: SpawnButton#5
   m_TagString: Untagged
@@ -779,10 +845,10 @@ RectTransform:
   m_Father: {fileID: 9170418458425626191}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -207.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2159697898324336797
 CanvasRenderer:
@@ -863,3 +929,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &95876285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909897018319473650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 805a4fc79d2fcd049b9d2094ca7cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

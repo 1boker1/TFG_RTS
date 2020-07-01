@@ -181,7 +181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -116.899994, y: 5}
+  m_AnchoredPosition: {x: -30, y: 6.599986}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8517467885985385481
@@ -212,18 +212,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5b5193055df88074faf12318de7116c3, type: 3}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 37
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: dasdsadasdas
+  m_Text: 'Attack Speed: 1000'
 --- !u!114 &8517467885985385495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8517467886106633993
 RectTransform:
   m_ObjectHideFlags: 0
@@ -352,7 +352,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -116.9, y: -55}
+  m_AnchoredPosition: {x: -30, y: -43.4}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8517467886419118251
@@ -383,18 +383,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5b5193055df88074faf12318de7116c3, type: 3}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 37
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: sadasdsadasdas
+  m_Text: 'Attack Speed: 1000'
 --- !u!114 &8517467886419118249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +586,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -116.899994, y: 65}
+  m_AnchoredPosition: {x: -30, y: 56.599987}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8517467886914136828
@@ -617,18 +617,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5b5193055df88074faf12318de7116c3, type: 3}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 30
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 37
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: asdasdasdasdasd
+  m_Text: 'Attack Speed: 1000'
 --- !u!114 &8517467886914136826
 MonoBehaviour:
   m_ObjectHideFlags: 0

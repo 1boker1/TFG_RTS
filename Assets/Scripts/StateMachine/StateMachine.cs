@@ -30,7 +30,7 @@ namespace Assets.Scripts.StateMachine
         private void DisplayState()
         {
             if (!Application.isEditor) return;
-            if (!CheatManager.Instance.SeeHelpers) return;
+            if (CheatManager.Instance==null || !CheatManager.Instance.SeeHelpers) return;
 
             var screenPoint = Camera.main.WorldToScreenPoint(transform.position);
 

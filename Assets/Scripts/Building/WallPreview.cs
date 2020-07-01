@@ -73,11 +73,18 @@ namespace Assets.Scripts.Building
 
         private void PositionatePillar()
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 999f, LayerMask.GetMask("Floor")))
-            {
-                RayOnMountains = hit.point.y > 0.5f;
+            //if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 999f, LayerMask.GetMask("Floor")))
+            //{
+            //    RayOnMountains = hit.point.y > 0.5f;
+			//
+            //    currentPillar.transform.position = hit.point.With(y: 0.01f);
+            //}
 
+			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 999f, LayerMask.GetMask("Floor")))
+            {
+                currentPillar.IsOnGround = Mathf.Abs(hit.point.y) < 0.5f;
                 currentPillar.transform.position = hit.point.With(y: 0.01f);
+				currentPillar.SetBuildState();
             }
         }
 

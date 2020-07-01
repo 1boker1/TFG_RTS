@@ -127,6 +127,7 @@ namespace Assets.Scripts.Building
         private void Cancel()
         {
             SelectionManager.isPlacingBuild = false;
+			Debug.Log(SelectionManager.isPlacingBuild);
 
             ResetValues();
         }
@@ -174,6 +175,8 @@ namespace Assets.Scripts.Building
 
             boxCollider.center = targetBuild.GetComponent<BoxCollider>().center;
             boxCollider.size = targetBuild.GetComponent<BoxCollider>().size;
+
+			SelectionManager.isPlacingBuild=true;
 
             gameObject.SetActive(true);
         }

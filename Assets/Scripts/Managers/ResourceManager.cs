@@ -8,8 +8,9 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Managers
 {
-    public class ResourceManager : Singleton<ResourceManager>
+    public class ResourceManager : MonoBehaviour
     {
+		public static ResourceManager Instance;
         [SerializeField] private float MaxCapacity = 1000;
 
         private List<ResourceType> resourceTypes = new List<ResourceType>();
@@ -21,7 +22,15 @@ namespace Assets.Scripts.Managers
         [SerializeField] private Text goldText;
         [SerializeField] private Text rockText;
 
-        private void Start()
+		private void Awake()
+		{
+			if(Instance==null)
+				Instance=this;
+			if(Instance!=this)
+				Destroy(gameObject);
+		}
+
+		private void Start()
         {
             InitializeResources();
 

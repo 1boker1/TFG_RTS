@@ -16,11 +16,17 @@ namespace Assets.Scripts
 
 		public Objective currentObjective;
 
-	    void Update()
+		float Radius;
+		private void Start()
+		{
+			Radius = GetComponent<SphereCollider>().radius+25;
+		}
+
+		void Update()
 	    {
 			if(currentTarget!=null && campUnits[0].stateMachine.currentState.GetType()!=typeof(PatrolAreaState))
 			{
-				if(Vector3.Distance(transform.position, currentTarget.transform.position)>25f)
+				if(Vector3.Distance(transform.position, currentTarget.transform.position)> Radius)
 				{
 					currentTarget=null;
 					OnTargetTooFar();
@@ -35,8 +41,9 @@ namespace Assets.Scripts
 		private void OnTriggerEnter(Collider other)
 		{
 			Unit.Unit _Unit=other.GetComponent<Unit.Unit>();
+			Debug.Log(other.name);
 
-			if(_Unit!=null && !campUnits.Contains(_Unit))
+			if(_Unit!=null && !campUnits.Contains(_Unit) && _Unit.Team==SelectionManager.Instance.m_Team)
 			{
 				OnNewTarget(_Unit);
 			}
@@ -50,6 +57,8 @@ namespace Assets.Scripts
 				_Unit.transform.parent=null;
 				_Unit.gameObject.SetActive(true);
 			}
+
+			transform.DetachChildren();
 		}
 
 		public void CampUnitKilled(Unit.Unit unit)
@@ -85,6 +94,8 @@ namespace Assets.Scripts
 
 		private void OnTargetTooFar()
 		{
+			Debug.Log("Too far");
+
 			foreach(var _Unit in campUnits)
 			{
 				_Unit.Target=null;

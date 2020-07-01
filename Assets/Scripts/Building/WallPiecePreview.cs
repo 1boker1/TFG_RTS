@@ -12,6 +12,8 @@ namespace Assets.Scripts.Building
 
         public bool CanBeBuilt { get; set; }
         public bool IsPillar;
+        public bool IsOnGround{ get; set; }
+        public bool IsColliding{ get; set; }
 
         private void Start()
         {
@@ -24,22 +26,37 @@ namespace Assets.Scripts.Building
         {
             if (IsTriggerException(other))
                 return;
-
-            SetBuildState(false);
+			IsColliding=true;
+            SetBuildState();
         }
 
-        private void OnTriggerExit(Collider other)
+		private void FixedUpdate()
+		{
+			if(!IsPillar)
+			{
+				Ray ray = new Ray(transform.position+Vector3.up*50, Vector3.down);
+
+				if (Physics.Raycast(ray, out var hit, 999f, LayerMask.GetMask("Floor")))
+				{
+				    IsOnGround = Mathf.Abs(hit.point.y) < 0.5f;
+				}
+
+				SetBuildState();
+			}
+		}
+
+		private void OnTriggerExit(Collider other)
         {
             if (IsTriggerException(other))
                 return;
-
-            SetBuildState(true);
+			IsColliding=false;
+            SetBuildState();
         }
 
-        private void SetBuildState(bool CanBuild)
+        public void SetBuildState()
         {
-            CanBeBuilt = CanBuild;
-            meshRenderer.material.SetColor("_Color", CanBuild ? new Color(1, 1, 1, 1) : new Color(1, 0, 0, 0.5f));
+            CanBeBuilt = !IsColliding && IsOnGround;
+            meshRenderer.material.SetColor("_Color", CanBeBuilt ? new Color(1, 1, 1, 1) : new Color(1, 0, 0, 0.5f));
         }
 
         private bool IsTriggerException(Collider other)

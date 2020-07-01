@@ -9,8 +9,9 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Managers
 {
-    public class SelectionManager : Singleton<SelectionManager>
+    public class SelectionManager : MonoBehaviour
     {
+		public static SelectionManager Instance;
         public static Rect SelectionBox = new Rect(0, 0, 0, 0);
 
         public static List<Unit.Unit> SelectedUnits = new List<Unit.Unit>();
@@ -39,7 +40,26 @@ namespace Assets.Scripts.Managers
         [SerializeField] private Texture2D gatherCursor;
         [SerializeField] private Texture2D buildCursor;
 
-        private void Update()
+		private void Awake()
+		{
+			if(Instance==null)
+				Instance=this;
+			if(Instance!=this)
+				Destroy(gameObject);
+
+			SelectionBox = new Rect(0, 0, 0, 0);
+			SelectedUnits = null;
+			SelectedEntities = null;	
+			SelectedEntities = new BindingList<ISelectable>();
+			SelectedUnits = new List<Unit.Unit>();
+		}
+
+		private void Start()
+		{
+			
+		}
+
+		private void Update()
         {
             if (isPlacingBuild) return;
 
@@ -88,8 +108,8 @@ namespace Assets.Scripts.Managers
 
         private void MouseInput()
         {
-            if (Input.GetMouseButtonDown(0) && !Utils.IsPointerOverUIObject()) ClickSelect();
-            if (Input.GetMouseButtonUp(0) && !Utils.IsPointerOverUIObject()) DragMouseSelect();
+            if (Input.GetMouseButtonDown(0) && !Utils.IsPointerOverUIObject() && !isPlacingBuild) ClickSelect();
+            if (Input.GetMouseButtonUp(0) && !Utils.IsPointerOverUIObject() && !isPlacingBuild) DragMouseSelect();
 
             MaxUnitsSelected();
 
@@ -178,5 +198,10 @@ namespace Assets.Scripts.Managers
                 }
             }
         }
-    }
+
+		private void OnDestroy()
+		{
+			
+		}
+	}
 }

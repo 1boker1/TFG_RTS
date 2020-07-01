@@ -7,8 +7,9 @@ using Assets.Scripts.Unit;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitCanvas : Singleton<UnitSpawnerCanvas>
+public class UnitCanvas : MonoBehaviour
 {
+	public static UnitCanvas Instance;
     [SerializeField] private Image unitSprite;
 
     [SerializeField] private Text attackDamage;
@@ -27,7 +28,15 @@ public class UnitCanvas : Singleton<UnitSpawnerCanvas>
 
     public bool isShowingUI;
 
-    private void Update()
+	private void Awake()
+	{
+		if(Instance==null)
+				Instance=this;
+		if(Instance!=this)
+				Destroy(gameObject);
+	}
+
+	private void Update()
     {
         SelectedUI(SelectionManager.SelectedUnits);
     }

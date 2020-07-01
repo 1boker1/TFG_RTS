@@ -7,14 +7,24 @@ using Assets.Scripts.Managers;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class SelectionLine : Singleton<SelectionLine>
+public class SelectionLine : MonoBehaviour
 {
+	public static SelectionLine Instance;
+
     [SerializeField] private LayerMask FloorMask;
     [SerializeField] private LineRenderer lineRenderer;
 
     private GameObject currentObject;
 
-    public void LineSetup(GameObject SelectedObject)
+	private void Awake()
+	{
+		if(Instance==null)
+			Instance=this;
+		if(Instance!=this)
+			Destroy(gameObject);
+	}
+
+	public void LineSetup(GameObject SelectedObject)
     {
         SetParent(SelectedObject.transform);
 
@@ -84,6 +94,7 @@ public class SelectionLine : Singleton<SelectionLine>
 
     public void EnableLine(bool Enabled)
     {
-        lineRenderer.enabled = Enabled;
+		if(lineRenderer!=null)
+			lineRenderer.enabled = Enabled;
     }
 }

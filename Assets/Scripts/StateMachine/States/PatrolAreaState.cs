@@ -22,6 +22,8 @@ namespace Assets.Scripts.StateMachine.States
 
         [SerializeField] private UnityEvent OnEnemyFound;
 
+		private float timer=0f;
+
 		private void Start()
 		{
 			Initialise();
@@ -37,18 +39,30 @@ namespace Assets.Scripts.StateMachine.States
 			navMeshAgent.SetDestination(currentPoint);
 			initialSpeed=navMeshAgent.speed;
 			navMeshAgent.speed=patrolSpeed;
+			timer=0;
 		}
 
 		public override void Execute()
 		{
+			timer+=Time.deltaTime;
+
 			if (Utils.InRange(transform.position, currentPoint, navMeshAgent.stoppingDistance))
 			{
-				currentPoint=GetNewPatrolPoint();
-				if(currentPoint==Vector3.positiveInfinity)
-					currentPoint=GetNewPatrolPoint();
+				SetNewPath();
+			}
+
+			if(timer>5)
+			{
+				SetNewPath();
+			}
+		}
+
+		public void SetNewPath()
+		{
+			currentPoint=GetNewPatrolPoint();
 
 				navMeshAgent.SetDestination(currentPoint);
-			}
+				timer=0;
 		}
 
 		public override void Exit()

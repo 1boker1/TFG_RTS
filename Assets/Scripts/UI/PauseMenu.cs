@@ -7,8 +7,20 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gameOverMenu;
 
-    private void Update()
+	private void Start()
+	{
+		GameObjectives.OnObjectivesCompleted+=EnableGameOver;
+	}
+
+	public void EnableGameOver()
+	{
+		if(gameOverMenu!=null)
+			gameOverMenu.SetActive(true);
+	}
+
+	private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             EnablePauseMenu(!pauseMenu.activeSelf);
@@ -36,7 +48,10 @@ public class PauseMenu : MonoBehaviour
 
     public void Exit()
     {
+		EnablePauseMenu(false);
+
 		Time.timeScale=1;
+
 		Fade.Instance.AddEventOnEndFade(()=>{SceneManager.LoadScene(0);Fade.Instance.FadeOut();});
 		Fade.Instance.FadeIn();
     }

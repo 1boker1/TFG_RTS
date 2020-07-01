@@ -111,7 +111,10 @@ public class GameCreator : MonoBehaviour
 		loadingPanel.SetActive(false);
 		canvas.sortingOrder=0;
 
-		Fade.Instance.AddEventOnEndFade(CreateMiniMap);
+		Fade.Instance.AddEventOnEndFade(()=>{
+			CreateMiniMap(); 
+			Destroy(this.gameObject);
+			});
         Fade.Instance.FadeOut();
     }
 
@@ -133,8 +136,9 @@ public class GameCreator : MonoBehaviour
 
         CreateResources(_MeshGenerator);
         CreatePlayer(_MeshGenerator);
-        _MeshGenerator.BuildNavigationMesh();
         CreateMissions(_MeshGenerator);
+        _MeshGenerator.BuildNavigationMesh();
+		
     }
 
     private void CreateResources(MeshGenerator _MeshGenerator)
@@ -142,6 +146,7 @@ public class GameCreator : MonoBehaviour
         _MeshGenerator.GenerateTreeMap();
         CreateResource(GoldPrefab, GoldAmount, _MeshGenerator);
         CreateResource(StonePrefab, StoneAmount, _MeshGenerator);
+        CreateResource(FoodPrefab, FoodAmount, _MeshGenerator);
     }
 
     private void CreateResource(GameObject Prefab, int amount, MeshGenerator _MeshGenerator)
@@ -168,6 +173,7 @@ public class GameCreator : MonoBehaviour
                         {
                             _Colliding = true;
                             _SkippedInstances++;
+							break;
                         }
                     }
                 }

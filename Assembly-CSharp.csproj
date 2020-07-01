@@ -91,7 +91,6 @@
     <Compile Include="Assets\Scripts\Managers\PopulationManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectionManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\Singleton.cs" />
     <Compile Include="Assets\Scripts\Managers\Tooltip.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipGameobject.cs" />
     <Compile Include="Assets\Scripts\Managers\Utils.cs" />

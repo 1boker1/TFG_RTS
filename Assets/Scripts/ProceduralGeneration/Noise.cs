@@ -78,9 +78,6 @@ namespace Assets.Scripts.ProceduralGeneration
             if (Scale <= 0)
                 Scale = 0.001f;
 
-            float _MaxNoiseHeight = float.MinValue;
-            float _MinNoiseHeight = float.MaxValue;
-
             float _HalfWidth = Width * 0.5f;
             float _HalfHeight = Height * 0.5f;
 
@@ -98,3 +95,4 @@ namespace Assets.Scripts.ProceduralGeneration
         }
     }
 }
+

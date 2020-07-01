@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Managers
 {
-    public class PopulationManager : Singleton<PopulationManager>
+    public class PopulationManager : MonoBehaviour
     {
+		public static PopulationManager Instance;
+
         public Text Population;
 
         public int MaxPopulation { get => maxPopulation; set { maxPopulation = value; OnPopulationChange?.Invoke(); } }
@@ -16,7 +18,15 @@ namespace Assets.Scripts.Managers
 
         public Action OnPopulationChange;
 
-        private void Start()
+		private void Awake()
+		{
+			if(Instance==null)
+				Instance=this;
+			if(Instance!=this)
+				Destroy(gameObject);
+		}
+
+		private void Start()
         {
             OnPopulationChange += UpdateUI;
 
@@ -32,5 +42,10 @@ namespace Assets.Scripts.Managers
         {
             return CurrentPopulation < MaxPopulation;
         }
-    }
+
+		private void OnDestroy()
+		{
+			OnPopulationChange=()=>{ };
+		}
+	}
 }

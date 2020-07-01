@@ -31,7 +31,7 @@ namespace Assets.Scripts.ProceduralGeneration
             var _Values = new RandomMapValues
             {
                 MapWidth = MeshGenerator.MapWidth,
-                MapHeight = MeshGenerator.MapHeight,
+                MapHeight = MeshGenerator.MapDepth,
                 VertexDistance = MeshGenerator.VertexDistance,
                 HeightMultiplier = MeshGenerator.HeightMultiplier,
                 NoiseScale = MeshGenerator.NoiseScale,
@@ -59,7 +59,7 @@ namespace Assets.Scripts.ProceduralGeneration
         public void SetValues(ref MeshGenerator MeshGenerator)
         {
             MeshGenerator.MapWidth = MapWidth;
-            MeshGenerator.MapHeight = MapHeight;
+            MeshGenerator.MapDepth = MapHeight;
             MeshGenerator.VertexDistance = VertexDistance;
             MeshGenerator.HeightMultiplier = HeightMultiplier;
             MeshGenerator.NoiseScale = NoiseScale;

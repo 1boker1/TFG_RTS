@@ -13,8 +13,9 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class SelectionCanvas : Singleton<SelectionCanvas>
+    public class SelectionCanvas : MonoBehaviour
     {
+		public static SelectionCanvas Instance;
         public GameObject canvas;
 
         [Header("Entity")]
@@ -34,14 +35,28 @@ namespace Assets.Scripts.UI
         [SerializeField] private UnitSpawnerCanvas unitSpawnerCanvas;
         [SerializeField] private StructureBuilderCanvas structureBuilderCanvas;
 
-        private void Start()
+		private void Awake()
+		{
+			if(Instance==null)
+				Instance=this;
+			if(Instance!=this)
+				Destroy(gameObject);
+		}
+
+		private void Start()
         {
             SelectionManager.SelectedEntities.ListChanged += SelectedEntitiesListChanged;
 
             EnableCanvas(false);
         }
 
-        private void FixedUpdate()
+		private void Update()
+		{
+			if(Input.GetKeyDown(KeyCode.P))
+				EnableCanvas(true);
+		}
+
+		private void FixedUpdate()
         {
             if (selectedEntities.Count == 0 || selectedEntities[0] == null)
                 return;
