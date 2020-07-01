@@ -176,10 +176,10 @@ MonoBehaviour:
   name: Tower
   maxHealthPoints: 100
   healthPoints: 50
-  woodCost: 0
+  woodCost: 250
   foodCost: 0
-  rockCost: 0
-  goldCost: 0
+  rockCost: 100
+  goldCost: 50
   IsWallPillar: 0
 --- !u!114 &1291658027180951015
 MonoBehaviour:

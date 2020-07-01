@@ -13,10 +13,12 @@ namespace Assets.Scripts
 	{
 	    private Unit.Unit currentTarget;
 		public List<Unit.Unit> campUnits;
+		public List<Unit.Unit> InsideUnits;
 
 		public Objective currentObjective;
 
 		float Radius;
+
 		private void Start()
 		{
 			Radius = GetComponent<SphereCollider>().radius+25;
@@ -24,7 +26,10 @@ namespace Assets.Scripts
 
 		void Update()
 	    {
-			if(currentTarget!=null && campUnits[0].stateMachine.currentState.GetType()!=typeof(PatrolAreaState))
+			if(Completed())
+				return;
+
+			if(currentTarget!=null && campUnits.Count>0 && campUnits[0].stateMachine.currentState.GetType()!=typeof(PatrolAreaState))
 			{
 				if(Vector3.Distance(transform.position, currentTarget.transform.position)> Radius)
 				{
@@ -36,6 +41,16 @@ namespace Assets.Scripts
 			{
 				OnTargetTooFar();
 			}
+
+			if(currentTarget==null && InsideUnits.Count!=0)
+			{
+				InsideUnits.RemoveAll(item => item == null);
+
+				foreach(var _Unit in campUnits)
+				{
+					_Unit.OnTarget(InsideUnits[0]);
+				}
+			}
 	    }
 	
 		private void OnTriggerEnter(Collider other)
@@ -45,7 +60,19 @@ namespace Assets.Scripts
 
 			if(_Unit!=null && !campUnits.Contains(_Unit) && _Unit.Team==SelectionManager.Instance.m_Team)
 			{
-				OnNewTarget(_Unit);
+				if(currentTarget==null)
+					OnNewTarget(_Unit);
+				
+				InsideUnits.Add(_Unit);
+			}
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			if(other.GetComponent<Unit.Unit>()!=null)
+			{
+				if(InsideUnits.Contains(other.GetComponent<Unit.Unit>()))
+					InsideUnits.Remove(other.GetComponent<Unit.Unit>());
 			}
 		}
 

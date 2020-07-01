@@ -109,5 +109,5 @@ namespace Assets.Scripts.Resources
 
             Destroy(gameObject);
         }
-    }
+	}
 }

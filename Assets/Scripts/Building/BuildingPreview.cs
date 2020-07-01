@@ -25,6 +25,7 @@ namespace Assets.Scripts.Building
         public int woodCost;
         public int foodCost;
         public int goldCost;
+        public int rockcost;
 
         public Unit.Unit Worker;
 
@@ -65,6 +66,7 @@ namespace Assets.Scripts.Building
                     ResourceManager.Instance.AddResource(typeof(Wood), -woodCost);
                     ResourceManager.Instance.AddResource(typeof(Food), -foodCost);
                     ResourceManager.Instance.AddResource(typeof(Gold), -goldCost);
+                    ResourceManager.Instance.AddResource(typeof(Rock), -rockcost);
 
                     Build();
                 }

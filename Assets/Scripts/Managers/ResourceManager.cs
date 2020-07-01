@@ -33,15 +33,7 @@ namespace Assets.Scripts.Managers
 		private void Start()
         {
             InitializeResources();
-
-            if (Application.isEditor) CheatCode();
-
-            //Cheat
-
-            foreach (var resourceType in resourceTypes)
-            {
-                resourceType.amount += 500;
-            }
+			InitialValues();
 
             UpdateUI();
         }
@@ -99,16 +91,12 @@ namespace Assets.Scripts.Managers
 
         public void ModifyMaxCapacity(float newCapacity) => MaxCapacity += newCapacity;
 
-        #region Cheats
-
-        private void CheatCode()
-        {
-            foreach (var resource in resourceTypes)
+        public void InitialValues()
+		{
+			foreach (var resource in resourceTypes)
             {
-                AddResource(resource.GetType(), MaxCapacity);
+                resource.amount=100;
             }
-        }
-
-        #endregion
+		}
     }
 }

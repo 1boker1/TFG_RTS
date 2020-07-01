@@ -2688,10 +2688,10 @@ MonoBehaviour:
   name: Archer
   maxHealthPoints: 50
   healthPoints: 50
-  woodCost: 1
-  foodCost: 1
+  woodCost: 150
+  foodCost: 100
   rockCost: 0
-  goldCost: 1
+  goldCost: 25
   attackSpeed: 1
   unitRange: 20
   attackDamage: 5
@@ -2780,6 +2780,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  weapon: {fileID: 0}
 --- !u!114 &4798801613700346987
 MonoBehaviour:
   m_ObjectHideFlags: 0

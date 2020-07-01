@@ -10,7 +10,6 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private int scrollSpeed = 75;
     [SerializeField] private int maxZoom = 30;
     [SerializeField] private int minZoom = 100;
-    [SerializeField] private int levelArea = 10000;
 
     [SerializeField] private LineRenderer[] lines;
 

@@ -2558,7 +2558,7 @@ GameObject:
   - component: {fileID: 7271454288184596574}
   - component: {fileID: 7162274230033265075}
   m_Layer: 0
-  m_Name: Peasant_White
+  m_Name: Peasant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2694,10 +2694,10 @@ MonoBehaviour:
   name: Peasant
   maxHealthPoints: 10
   healthPoints: 10
-  woodCost: 5
-  foodCost: 5
-  rockCost: 5
-  goldCost: 5
+  woodCost: 75
+  foodCost: 25
+  rockCost: 0
+  goldCost: 0
   attackSpeed: 1
   unitRange: 1.5
   attackDamage: 5

@@ -26,6 +26,9 @@ public class SelectionLine : MonoBehaviour
 
 	public void LineSetup(GameObject SelectedObject)
     {
+		if(SelectedObject==null)
+			return;
+
         SetParent(SelectedObject.transform);
 
         if (lineRenderer == null)
@@ -95,6 +98,11 @@ public class SelectionLine : MonoBehaviour
     public void EnableLine(bool Enabled)
     {
 		if(lineRenderer!=null)
+		{
+			if(Enabled==false)
+				transform.parent=null;
+
 			lineRenderer.enabled = Enabled;
+		}
     }
 }

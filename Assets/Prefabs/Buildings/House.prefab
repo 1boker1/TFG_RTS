@@ -144,9 +144,9 @@ MonoBehaviour:
   name: House
   maxHealthPoints: 100
   healthPoints: 0
-  woodCost: 0
+  woodCost: 150
   foodCost: 0
-  rockCost: 0
+  rockCost: 25
   goldCost: 0
   IsWallPillar: 0
 --- !u!114 &3394868774454769689

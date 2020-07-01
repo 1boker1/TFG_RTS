@@ -145,10 +145,10 @@ MonoBehaviour:
   name: Town Hall
   maxHealthPoints: 100
   healthPoints: 0
-  woodCost: 0
-  foodCost: 0
-  rockCost: 0
-  goldCost: 0
+  woodCost: 400
+  foodCost: 50
+  rockCost: 100
+  goldCost: 100
   IsWallPillar: 0
 --- !u!114 &1206376785
 MonoBehaviour:

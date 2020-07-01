@@ -133,7 +133,7 @@ MonoBehaviour:
   healthPoints: 10
   woodCost: 0
   foodCost: 0
-  rockCost: 0
+  rockCost: 30
   goldCost: 0
   IsWallPillar: 0
 --- !u!114 &7997945593021261387
