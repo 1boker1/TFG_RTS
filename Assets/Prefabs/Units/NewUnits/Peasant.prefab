@@ -2694,8 +2694,8 @@ MonoBehaviour:
   name: Peasant
   maxHealthPoints: 10
   healthPoints: 10
-  woodCost: 75
-  foodCost: 25
+  woodCost: 25
+  foodCost: 75
   rockCost: 0
   goldCost: 0
   attackSpeed: 1
@@ -2703,7 +2703,7 @@ MonoBehaviour:
   attackDamage: 5
   gatherSpeed: 1
   gatherAmount: 1
-  searchRange: 25
+  searchRange: 30
   movementSpeed: 10
 --- !u!114 &476843967745004808
 MonoBehaviour:

@@ -41,7 +41,7 @@ namespace Assets.Scripts.UI
 
                     Tooltip _Tooltip = spawnButtons[i].GetComponent<Tooltip>();
 
-                    _Tooltip.SetData(data.GetComponent<ISpendable>());
+					_Tooltip.SetData(building.GetComponent<ISpendable>());
                 }
             }
         }
@@ -52,6 +52,7 @@ namespace Assets.Scripts.UI
 
             if (buildingData.WoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Wood)) &&
                 buildingData.GoldCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Gold)) &&
+                buildingData.RockCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Rock)) &&
                 buildingData.FoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Food)))
             {
                 BuildingPreview.instance.Worker = builder;

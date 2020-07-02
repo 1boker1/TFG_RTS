@@ -10,15 +10,22 @@ public class CheatManager : MonoBehaviour
 
 	private void Awake()
 	{
+#if UNITY_EDITOR
+		Destroy(gameObject);
 		if(Instance==null)
 				Instance=this;
 			if(Instance!=this)
 				Destroy(gameObject);
 
 		Debug.LogError("Quitar los cheats para la build final");
+#endif
+
 	}
 	void Update()
     {
+#if UNITY_EDITOR
+		if (Input.GetKeyDown(KeyCode.L))
+			GetComponent<Light>().enabled=!GetComponent<Light>().enabled;
         //if (Input.GetKeyDown(KeyCode.C)) SeeHelpers = !SeeHelpers;
         if (Input.GetKeyDown(KeyCode.RightControl)) Time.timeScale = 5;
         if (Input.GetKeyUp(KeyCode.RightControl)) Time.timeScale = 1;
@@ -27,5 +34,7 @@ public class CheatManager : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.Delete))
         //    foreach (var unit in SelectionManager.SelectedUnits)
         //        Destroy(unit.gameObject);
+#endif
+
     }
 }

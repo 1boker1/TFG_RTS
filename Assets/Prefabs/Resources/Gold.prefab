@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6146209729512004783}
   - component: {fileID: 8938842254769777753}
   - component: {fileID: 6903922029125844676}
+  - component: {fileID: -8667184374965393874}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Resource
@@ -111,5 +112,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.5, y: 1.6443187, z: 4.5}
-  m_Center: {x: 0.33590293, y: 0.5640009, z: -0.123735785}
+  m_Size: {x: 4.5, y: 1.5, z: 4.5}
+  m_Center: {x: 0.3, y: 0.5, z: -0.1}
+--- !u!208 &-8667184374965393874
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212612175104416439}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.25, y: 0.75, z: 2.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.3, y: 0.5, z: -0.1}
+  m_TimeToStationary: 0.5

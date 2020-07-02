@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1729569278440414848}
   - component: {fileID: 7350091096484568205}
   - component: {fileID: -5341514979336924649}
+  - component: {fileID: -5543957202036943362}
   m_Layer: 0
   m_Name: FoodBush
   m_TagString: Untagged
@@ -118,6 +119,22 @@ MonoBehaviour:
   amount: 250
   gatherMultiplier: 1
   infiniteSource: 0
+--- !u!208 &-5543957202036943362
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729569278442381320}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.0400001, y: 0.933, z: 1.0020001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.933, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &1294773426532565191
 PrefabInstance:
   m_ObjectHideFlags: 0

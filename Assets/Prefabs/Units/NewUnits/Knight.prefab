@@ -1174,7 +1174,7 @@ MonoBehaviour:
   attackDamage: 5
   gatherSpeed: 0
   gatherAmount: 0
-  searchRange: 10
+  searchRange: 75
   movementSpeed: 10
 --- !u!114 &2178954291774192727
 MonoBehaviour:

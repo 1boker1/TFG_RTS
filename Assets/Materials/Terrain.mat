@@ -77,8 +77,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - MaxY: 33.399143
-    - MinY: -33.398037
+    - MaxY: 33.395042
+    - MinY: -33.39753
     - Vector1_2B9A78DF: 1.54
     - Vector1_3AA9E31C: 1
     - Vector1_6ED35F62: 5.23

@@ -16,10 +16,10 @@ namespace Assets.Editor
 
             if (GUILayout.Button("Generate Mesh"))
                 _MeshGenerator.GenerateMesh();
-            if (GUILayout.Button("Generate Trees"))
-                _MeshGenerator.GenerateTreeMap();
-            if (GUILayout.Button("Clear Trees"))
-                _MeshGenerator.treeGenerator.ClearTrees();
+            //if (GUILayout.Button("Generate Trees"))
+            //    _MeshGenerator.GenerateTreeMap();
+            //if (GUILayout.Button("Clear Trees"))
+            //    _MeshGenerator.treeGenerator.ClearTrees();
             
 			GUILayout.Space(10);
 			GUILayout.Label("Export And Save");

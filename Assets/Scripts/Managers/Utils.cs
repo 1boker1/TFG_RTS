@@ -170,19 +170,6 @@ namespace Assets.Scripts.Managers
             return positions;
         }
 
-        public static bool HaveEnoughResources(int wood, int gold, int food)
-        {
-            if (wood > ResourceManager.Instance.GetResourceAmount(typeof(Wood))) return false;
-            if (gold > ResourceManager.Instance.GetResourceAmount(typeof(Gold))) return false;
-            if (food > ResourceManager.Instance.GetResourceAmount(typeof(Food))) return false;
-
-            ResourceManager.Instance.AddResource(typeof(Wood), -wood);
-            ResourceManager.Instance.AddResource(typeof(Food), -gold);
-            ResourceManager.Instance.AddResource(typeof(Gold), -food);
-
-            return true;
-        }
-
         public static bool HaveEnoughResources([CanBeNull] Wood wood, [CanBeNull] Food food, [CanBeNull] Gold gold, [CanBeNull] Rock rock)
         {
             if (wood != null && !HaveEnoughResources(wood)) return false;

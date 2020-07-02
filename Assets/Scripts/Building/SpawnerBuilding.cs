@@ -2,6 +2,7 @@
 using Assets.Scripts.Data;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Resources;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -69,7 +70,7 @@ namespace Assets.Scripts.Building
 
         private void SetSpawnPoint(Vector3 position, bool active)
         {
-            destinationMarker.transform.position = MathExtension.CorrectVerticalPosition(position);
+            destinationMarker.transform.position = position.With(y: transform.position.y);
             destinationMarker.SetActive(active);
             destinationMarker.GetComponent<PathRenderer>().SetPositions(transform.position);
         }
@@ -78,7 +79,7 @@ namespace Assets.Scripts.Building
         {
             UnitToCommand.GetComponent<NavMeshAgent>().Warp(UnitToCommand.transform.position);
 
-            if (!target) UnitToCommand.MoveToPosition(MathExtension.CorrectVerticalPosition(destinationMarker.transform.position, LayerMask.NameToLayer("Floor")));
+            if (!target) UnitToCommand.MoveToPosition(destinationMarker.transform.position.With(y:transform.position.y));
             else UnitToCommand.OnTarget(target.GetComponent<ISelectable>());
         }
 
@@ -128,8 +129,17 @@ namespace Assets.Scripts.Building
             if (UnitToAdd == null || queue.Count >= queueCapacity)
                 return;
 
-            if (Utils.HaveEnoughResources(UnitToAdd.WoodCost, UnitToAdd.FoodCost, UnitToAdd.GoldCost, UnitToAdd.RockCost))
+			if (UnitToAdd.WoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Wood)) &&
+                UnitToAdd.GoldCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Gold)) &&
+                UnitToAdd.RockCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Rock)) &&
+                UnitToAdd.FoodCost.amount <= ResourceManager.Instance.GetResourceAmount(typeof(Food)))
+            {
+				ResourceManager.Instance.AddResource(typeof(Wood), -UnitToAdd.WoodCost.amount);
+				ResourceManager.Instance.AddResource(typeof(Gold), -UnitToAdd.GoldCost.amount);
+				ResourceManager.Instance.AddResource(typeof(Rock), -UnitToAdd.RockCost.amount);
+				ResourceManager.Instance.AddResource(typeof(Food), -UnitToAdd.FoodCost.amount);
                 queue.Add(UnitToAdd);
+			}
         }
 
         public void RemoveFromQueue(int i)

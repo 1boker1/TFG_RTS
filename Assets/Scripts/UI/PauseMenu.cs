@@ -17,7 +17,12 @@ public class PauseMenu : MonoBehaviour
 	public void EnableGameOver()
 	{
 		if(gameOverMenu!=null)
+		{
+			if(SelectionManager.Instance!=null)
+				SelectionManager.Instance.DeselectAll();
+			Time.timeScale=0;
 			gameOverMenu.SetActive(true);
+		}
 	}
 
 	private void Update()

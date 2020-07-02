@@ -37,11 +37,6 @@ public class GameCreator : MonoBehaviour
 	[Header("Objectives")]
 	public List<Objective> ObjectivesPrefab=new List<Objective>();
 
-
-	public GameObject loadingPanel;
-	public Image loadingBar;
-	public Text loadingText;
-
 	private Canvas canvas;
 
     private void Awake()
@@ -56,7 +51,7 @@ public class GameCreator : MonoBehaviour
     private void Start()
     {
 		mapValuesPanel.SetActive(true);
-		loadingPanel.SetActive(false);
+
 		canvas=GetComponentInChildren<Canvas>();
 		canvas.sortingOrder=0;
         SetMapPresets();
@@ -95,8 +90,6 @@ public class GameCreator : MonoBehaviour
     private void LoadScene()
     {
 		mapValuesPanel.SetActive(false);
-		loadingPanel.SetActive(true);
-		canvas.sortingOrder=2;
 
         SceneManager.sceneLoaded += OnGameLoaded;
         SceneManager.LoadSceneAsync(SceneToLoadIndex);
@@ -106,10 +99,7 @@ public class GameCreator : MonoBehaviour
     {
 		SceneManager.sceneLoaded-=OnGameLoaded;
 
-       CreateMap();    
-
-		loadingPanel.SetActive(false);
-		canvas.sortingOrder=0;
+		CreateMap();    
 
 		Fade.Instance.AddEventOnEndFade(()=>{
 			CreateMiniMap(); 
@@ -183,7 +173,7 @@ public class GameCreator : MonoBehaviour
             }
         }
 
-        Debug.Log("Created " + (amount - _SkippedInstances) + " / " + amount + " of " + Prefab.GetComponent<Resource>().resourceType);
+        //Debug.Log("Created " + (amount - _SkippedInstances) + " / " + amount + " of " + Prefab.GetComponent<Resource>().resourceType);
     }
 
     private void CreateMissions(MeshGenerator _MeshGenerator)

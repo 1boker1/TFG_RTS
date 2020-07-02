@@ -49,9 +49,6 @@ namespace Assets.Scripts.Building
         {
             SelectionManager.isPlacingBuild = true;
 
-            isColliding = true;
-            isOnGround = true;
-
             CanBuild();
         }
 
@@ -129,7 +126,6 @@ namespace Assets.Scripts.Building
         private void Cancel()
         {
             SelectionManager.isPlacingBuild = false;
-			Debug.Log(SelectionManager.isPlacingBuild);
 
             ResetValues();
         }
@@ -177,6 +173,14 @@ namespace Assets.Scripts.Building
 
             boxCollider.center = targetBuild.GetComponent<BoxCollider>().center;
             boxCollider.size = targetBuild.GetComponent<BoxCollider>().size;
+
+			woodCost=(int)Target.GetComponent<BuildingData>().WoodCost.amount;
+			foodCost=(int)Target.GetComponent<BuildingData>().FoodCost.amount;
+			goldCost=(int)Target.GetComponent<BuildingData>().GoldCost.amount;
+			rockcost=(int)Target.GetComponent<BuildingData>().RockCost.amount;
+
+			isColliding = false;
+            isOnGround = true;
 
 			SelectionManager.isPlacingBuild=true;
 

@@ -126,7 +126,7 @@ namespace Assets.Scripts.Managers
 
             if (target != null)
             {
-                StartCoroutine(target.Highlight());
+				StartCoroutine(target.Highlight());
 
                 OnTarget?.Invoke(target);
             }

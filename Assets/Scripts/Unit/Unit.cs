@@ -83,12 +83,14 @@ namespace Assets.Scripts.Unit
         {
             for (int i = 0; i < 6; i++)
             {
-                spriteRenderer.enabled = !spriteRenderer.enabled;
+				if(spriteRenderer!=null)
+					spriteRenderer.enabled = !spriteRenderer.enabled;
 
                 yield return new WaitForSeconds(.2f);
             }
 
-            if (!Selected) spriteRenderer.enabled = false;
+            if (!Selected && spriteRenderer!=null) 
+				spriteRenderer.enabled = false;
         }
 
         public Type GetAction(Unit unit, int? team)

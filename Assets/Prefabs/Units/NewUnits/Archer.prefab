@@ -2697,7 +2697,7 @@ MonoBehaviour:
   attackDamage: 5
   gatherSpeed: 0
   gatherAmount: 0
-  searchRange: 10
+  searchRange: 75
   movementSpeed: 10
 --- !u!114 &5699267332246233770
 MonoBehaviour:
@@ -2889,6 +2889,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.41170508
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: c3972562e865e5d4c84dff2ee012a91d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 870bcbe66fbf1e0479f611163b71d61e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3972562e865e5d4c84dff2ee012a91d, type: 3}
 --- !u!4 &5882178681069009002 stripped

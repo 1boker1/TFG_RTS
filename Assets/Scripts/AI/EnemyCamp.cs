@@ -48,6 +48,7 @@ namespace Assets.Scripts
 
 				foreach(var _Unit in campUnits)
 				{
+					if(InsideUnits.Count>0)
 					_Unit.OnTarget(InsideUnits[0]);
 				}
 			}
@@ -56,7 +57,6 @@ namespace Assets.Scripts
 		private void OnTriggerEnter(Collider other)
 		{
 			Unit.Unit _Unit=other.GetComponent<Unit.Unit>();
-			Debug.Log(other.name);
 
 			if(_Unit!=null && !campUnits.Contains(_Unit) && _Unit.Team==SelectionManager.Instance.m_Team)
 			{
@@ -121,8 +121,6 @@ namespace Assets.Scripts
 
 		private void OnTargetTooFar()
 		{
-			Debug.Log("Too far");
-
 			foreach(var _Unit in campUnits)
 			{
 				_Unit.Target=null;

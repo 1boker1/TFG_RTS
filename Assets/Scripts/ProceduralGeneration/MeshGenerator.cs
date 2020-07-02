@@ -198,16 +198,18 @@ namespace Assets.Scripts.ProceduralGeneration
 
         public void BuildNavigationMesh()
         {
+			float _CurrentTime=Time.realtimeSinceStartup;
 			MeshCollider collider = meshRenderer.GetComponent<MeshCollider>();
 
             if (collider == null)
                 collider = meshRenderer.gameObject.AddComponent<MeshCollider>();
+
 			collider.sharedMesh = mesh;
             navMesh.size = new Vector3(MapWidth * VertexDistance, 1, MapDepth * VertexDistance);
             navMesh.center = new Vector3(MapWidth * VertexDistance * 0.5f, 0, MapDepth * VertexDistance * 0.5f);
             navMesh.BuildNavMesh();
 
-            Debug.Log("NavMesh: " + ((Time.realtimeSinceStartup - StartTime) * 1000f) + "ms");
+            Debug.Log("NavMesh: " + ((Time.realtimeSinceStartup - _CurrentTime) * 1000f) + "ms");
         }
 
         public void GenerateTreeMap()
@@ -272,6 +274,8 @@ namespace Assets.Scripts.ProceduralGeneration
 
             meshFilter.mesh.SetVertices(_Vertices);
             meshFilter.mesh.RecalculateNormals();
+
+			mesh=meshFilter.mesh;
         }
 
         public List<List<Vector3>> GetRegions()

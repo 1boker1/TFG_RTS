@@ -144,7 +144,7 @@ MonoBehaviour:
   name: House
   maxHealthPoints: 100
   healthPoints: 0
-  woodCost: 150
+  woodCost: 100
   foodCost: 0
   rockCost: 25
   goldCost: 0
