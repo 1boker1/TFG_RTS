@@ -23,7 +23,7 @@ public class MapDisplay : MonoBehaviour
             }
         }
 
-        targetTexture.Resize(_Width, _Height);
+        targetTexture.Reinitialize(_Width, _Height);
         targetTexture.SetPixels(_ColorMap);
         targetTexture.Apply();
 
